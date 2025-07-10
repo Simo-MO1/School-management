@@ -67,7 +67,11 @@ void addStudent(vector<Student> &students)
   // Corrected constructor call based on student.h order:
   Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality);
   students.push_back(s);
+<<<<<<< HEAD
   cout << "✅ Student added!!\n";
+=======
+  cout<<"Student added!!\n";
+>>>>>>> 47b5bbfebe8febf5a77b7c8ed9e91d6b61fc3552
   waitEnter();
 }
 
@@ -329,5 +333,10 @@ int main()
   else
     cout << "Other roles coming soon...\n";
 
+<<<<<<< HEAD
   return 0;
 }
+=======
+ return 0;
+}
+>>>>>>> 47b5bbfebe8febf5a77b7c8ed9e91d6b61fc3552
