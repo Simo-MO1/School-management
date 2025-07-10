@@ -1,20 +1,20 @@
 #ifndef user_h
 #define user_h
-#include<string>
-using namespace std;
+#include <string>
 
-class User{
-  private:
-  string Username, Password, Role;
+class User
+{
+private:
+  std::string Username, Password, Role; 
 
-  public:
+public:
   User();
-  User(string usern, string passw, string rol);
+  User(std::string usern, std::string passw, std::string rol); 
 
-  string getUsername()const;
-  string getPassword()const;
-  string getRole()const;
-  
-  static bool authenticate(const string& inputUser, const string& inputPass,  string& outRole);
+  std::string getUsername() const;
+  std::string getPassword() const; 
+  std::string getRole() const;     
+
+  static bool authenticate(const std::string &inputUser, const std::string &inputPass, std::string &outRole); 
 };
 #endif

@@ -1,21 +1,20 @@
 #ifndef student_h
 #define student_h
-#include<string>
-using namespace std;
+#include <string>
 
-class Student{
-    private:
-    int ID, Age;
-    string First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality;
+class Student
+{
+private:
+  int ID, Age;
+  std::string First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality;
 
-    public:
-    Student();
-    Student(int ID, int Age, string First_Name, string Last_Name, string Sex, string Birth_Place, string Birth_Date, string Nationality);
+public:
+  Student();
+  Student(int ID, int Age, std::string First_Name, std::string Last_Name, std::string Sex, std::string Birth_Place, std::string Birth_Date, std::string Nationality);
 
-    void displayInfo() const;
-    int getID() const;
-    string getFullName() const;
-    void saveToFile() const;
+  void displayInfo() const;
+  int getID() const;
+  std::string getFullName() const;
+  void saveToFile() const;
 };
-
 #endif

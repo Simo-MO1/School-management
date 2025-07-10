@@ -1,20 +1,25 @@
 #ifndef professor_h
 #define professor_h
-#include<string>
-using namespace std;
+#include <string>
 
-class Professor{
-    private:
-     int ID, Age, Salary;
-     string First_Name, Last_Name, Speciality;
-     
-     public:
-     Professor();
-     Professor(int ID, int Age, string First_Name, string Last_Name, string Speciality, float Salary);
-     
-     void displayInfo() const;
-     int getID() const;
-     string getFullName() const;
-     void saveToFile() const;
+// It's generally better to avoid 'using namespace std;' in headers.
+// Qualify names with std:: or put 'using namespace std;' in .cpp files.
+// using namespace std; // Removed from header
+
+class Professor
+{
+private:
+  int ID, Age;
+  float Salary; 
+  std::string First_Name, Last_Name, Speciality; 
+
+public:
+  Professor();
+  Professor(int ID, int Age, std::string First_Name, std::string Last_Name, std::string Speciality, float Salary);
+
+  void displayInfo() const;
+  int getID() const;
+  std::string getFullName() const;
+  void saveToFile() const;
 };
 #endif
