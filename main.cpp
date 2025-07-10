@@ -48,7 +48,7 @@ void addStudent(vector<Student>&students){
 
   Student s(ID,Age,First_Name,Last_Name,Birth_Place,Birth_Date,Sex,Nationality);
   students.push_back(s);
-  cout<<"✅Student added!!\n";
+  cout<<"Student added!!\n";
   waitEnter();
 }
 
