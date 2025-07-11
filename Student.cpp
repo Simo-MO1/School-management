@@ -5,8 +5,8 @@
 using namespace std; // OK to use in .cpp file
 
 Student::Student(){}
-Student::Student(int id, int age, string first, string last, string sex, string BirthP, string BirthD, string nat)
-    : ID(id), First_Name(first), Last_Name(last), Age(age), Sex(sex), Birth_Place(BirthP), Birth_Date(BirthD), Nationality(nat) {}
+Student::Student(int id, int age, string first, string last, string sex, string BirthP, string BirthD, string nat, float grade)
+    : ID(id), First_Name(first), Last_Name(last), Age(age), Sex(sex), Birth_Place(BirthP), Birth_Date(BirthD), Nationality(nat), Grade(grade) {}
 
 void Student::displayInfo() const
 {
@@ -37,6 +37,10 @@ void Student::saveToFile() const
     cerr << "Unable to open students.txt for writing!!\n";
   }
 }
+
+float Student::getGrade() const{
+    return Grade;
+  }
 
 
 
