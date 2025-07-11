@@ -67,11 +67,9 @@ void addStudent(vector<Student> &students)
   // Corrected constructor call based on student.h order:
   Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality);
   students.push_back(s);
-<<<<<<< HEAD
   cout << "✅ Student added!!\n";
-=======
+
   cout<<"Student added!!\n";
->>>>>>> 47b5bbfebe8febf5a77b7c8ed9e91d6b61fc3552
   waitEnter();
 }
 
@@ -295,6 +293,10 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       break;
 
     case 7:
+      User::registerMenu(); waitEnter();
+      break;
+
+    case 8:
       cout << "Logging out...\n";
       break; 
 
@@ -303,6 +305,17 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       waitEnter();
     }
   } while (choice != 7);
+}
+
+void StudentMenu(const string& Username){
+  cout<<"\nWelcome Student: "<<Username<<endl;
+  cout<<"\nFeature: View your profile is coming soon\n";
+
+}
+
+void ProfessorMenu(const string& Username){
+  cout<<"\nWelcome Professor: "<<endl;
+  cout<<"\nFeature: View lists of students is coming soon\n";
 }
 
 int main()
@@ -330,13 +343,11 @@ int main()
   cout << "Welcome " << role << "!\n";
   if (role == "admin")
     adminMenu(students, profs);
+  else if(role == "student") StudentMenu(username);
+  else if(role == "professor") ProfessorMenu(username);
   else
     cout << "Other roles coming soon...\n";
 
-<<<<<<< HEAD
   return 0;
 }
-=======
- return 0;
-}
->>>>>>> 47b5bbfebe8febf5a77b7c8ed9e91d6b61fc3552
+
