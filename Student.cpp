@@ -42,5 +42,9 @@ float Student::getGrade() const{
     return Grade;
   }
 
+void Student::setGrade(float g){
+    Grade = g;
+}
+
 
 

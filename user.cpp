@@ -46,3 +46,18 @@ bool User::authenticate(const string &inputUser, const string &inputPass, string
   file.close();
   return false;
 }
+
+void User:: registerUser(){
+   string Username, Password, Role;
+   cout<<"enter your username: "; cin>>Username;
+   cout<<"enter your password: "; cin>>Password;
+   cout<<"enter your role('admin', 'student', 'professor')"; cin>>Role;
+
+   ofstream outFile("users.txt",ios::app);
+    if(outFile.is_open()){
+      outFile<<Username<<","<<Password<<","<<Role<<"\n";
+      outFile.close();
+      cout<<"you've been registered succesfully\n";
+    }
+   
+}

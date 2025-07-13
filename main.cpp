@@ -29,6 +29,7 @@ void addStudent(vector<Student> &students)
 {
   int ID, Age;
   string First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality;
+  float Grade;
 
   cout << "enter student's ID: \n";
   while (!(cin >> ID))
@@ -65,7 +66,7 @@ void addStudent(vector<Student> &students)
   getline(cin, Nationality); 
 
   // Corrected constructor call based on student.h order:
-  Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality);
+  Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality, Grade);
   students.push_back(s);
   cout << "✅ Student added!!\n";
 
@@ -125,7 +126,7 @@ void loadStudentsFromFile(vector<Student> &students)
   while (getline(file, line))
   {
     stringstream ss(line);
-    string idstr, agestr, fname, lname, birthp, birthd, gender, natio;
+    string idstr, agestr, fname, lname, birthp, birthd, gender, natio,gra;
 
     
     if (getline(ss, idstr, ',') &&
@@ -135,11 +136,12 @@ void loadStudentsFromFile(vector<Student> &students)
         getline(ss, birthp, ',') &&
         getline(ss, birthd, ',') &&
         getline(ss, gender, ',') &&
-        getline(ss, natio, ','))
+        getline(ss, natio, ',')&&
+        getline(ss, gra,','))
     {
       try
       {
-        Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio);
+        Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio, stof(gra));
         students.push_back(s);
       }
       catch (const std::invalid_argument &e)
@@ -200,7 +202,7 @@ void addProfessor(vector<Professor> &profs)
   clearInput();
 
   profs.emplace_back(ID, Age, First_Name, Last_Name, Speciality, Salary);
-  cout << "✅ Professor added.\n";
+  cout << " Professor added.\n";
   waitEnter();
 }
 
@@ -307,15 +309,41 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   } while (choice != 7);
 }
 
-void StudentMenu(const string& Username){
+void StudentMenu(const string& Username, const vector<Student>&students){
   cout<<"\nWelcome Student: "<<Username<<endl;
-  cout<<"\nFeature: View your profile is coming soon\n";
-
+  cout<<"\n=========Student Menu=========\n";
+  for(const auto& s:students){
+     if(s.getFullName()==Username){
+       s.displayInfo();
+       break;
+     }
+  }
 }
 
-void ProfessorMenu(const string& Username){
+void ProfessorMenu(vector<Student>&students){
+  int choice;
+  do{
   cout<<"\nWelcome Professor: "<<endl;
-  cout<<"\nFeature: View lists of students is coming soon\n";
+  cout<<"\n=========Professor Meny=========\n";
+  cout<<"1-View student list\n 2-Add Grade\n 3-Log out\n";
+  cout<<"Enter your choice\n"; cin>>choice;
+  if(choice==1){
+    displayStudents(students);
+  } else if(choice==2){
+    int id;
+    float grade;
+    cout<<"Enter Student's ID: \n"; cin>>id;
+    cout<<"Enter his/her grade: \n"; cin>>grade;
+    for(auto& s:students){
+      if(s.getID()==id){
+        s.setGrade(grade);
+        cout<<"Grade updated!\n";
+        break;
+      }
+    }
+    waitEnter();
+  }
+  }while(choice!=3);
 }
 
 int main()
@@ -343,10 +371,10 @@ int main()
   cout << "Welcome " << role << "!\n";
   if (role == "admin")
     adminMenu(students, profs);
-  else if(role == "student") StudentMenu(username);
-  else if(role == "professor") ProfessorMenu(username);
+  else if(role == "student") StudentMenu(username, students);
+  else if(role == "professor") ProfessorMenu(students);
   else
-    cout << "Other roles coming soon...\n";
+    cout << "Unkown Role!...\n";
 
   return 0;
 }

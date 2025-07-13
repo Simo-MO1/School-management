@@ -18,6 +18,6 @@ public:
   std::string getFullName() const;
   void saveToFile() const;
   float getGrade()const;
-  void setGrade(float g) const;
+  void setGrade(float g);
 };
 #endif
