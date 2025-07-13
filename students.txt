@@ -1,0 +1,3 @@
+201,19,Mohamed,Alali,Fes,17/12/2005,Male,Moroccan
+202,18,Mehdi,chihaja,Meknas,14/03/2006,Male,Moroccan
+203,18,Hanae,maneref,Rabat,09/10/2006,Female,Moroccan
