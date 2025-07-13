@@ -16,7 +16,6 @@ public:
   std::string getRole() const;     
 
   static bool authenticate(const std::string &inputUser, const std::string &inputPass, std::string &outRole);
-  static void registerMenu(); 
   static void registerUser();
 };
 #endif

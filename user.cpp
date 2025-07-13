@@ -59,5 +59,4 @@ void User:: registerUser(){
       outFile.close();
       cout<<"you've been registered succesfully\n";
     }
-   
 }

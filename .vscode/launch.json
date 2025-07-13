@@ -1,38 +1,27 @@
 {
-  "version": "2.0.0",
-  "tasks": [
+  "version": "0.2.0",
+  "configurations": [
     {
-      "label": "Build with g++",
-      "type": "shell",
-      "command": "g++",
-      "args": [
-        "-g",
-        "main.cpp",  // Add other .cpp files if needed
-        "-o",
-        "program.exe"
+      "name": "Debug main.exe",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/main.exe",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe",
+      "setupCommands": [
+        {
+          "description": "Enable pretty printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
       ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "problemMatcher": ["$gcc"],
-      "detail": "Builds the program using g++"
-    },
-    {
-      "label": "Run program",
-      "type": "shell",
-      "command": "./program.exe",
-      "dependsOn": "Build with g++",
-      "group": {
-        "kind": "test",
-        "isDefault": true
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "shared"
-      }
+      "preLaunchTask": "build"
     }
   ]
 }
+

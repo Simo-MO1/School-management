@@ -295,7 +295,7 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       break;
 
     case 7:
-      User::registerMenu(); waitEnter();
+      User::registerUser(); waitEnter();
       break;
 
     case 8:
