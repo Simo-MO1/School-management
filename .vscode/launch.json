@@ -1,8 +1,9 @@
+// .vscode/launch.json
 {
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug main.exe",
+      "name": "C++ Debug (MSYS2)",
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/main.exe",
@@ -10,7 +11,7 @@
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
-      "externalConsole": false,
+      "externalConsole": true,  // ✅ this is enough to open a separate window
       "MIMode": "gdb",
       "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe",
       "setupCommands": [

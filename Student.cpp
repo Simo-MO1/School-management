@@ -4,7 +4,7 @@
 
 using namespace std; // OK to use in .cpp file
 
-Student::Student(){}
+Student::Student() {}
 Student::Student(int id, int age, string first, string last, string sex, string BirthP, string BirthD, string nat, float grade)
     : ID(id), First_Name(first), Last_Name(last), Age(age), Sex(sex), Birth_Place(BirthP), Birth_Date(BirthD), Nationality(nat), Grade(grade) {}
 
@@ -38,13 +38,12 @@ void Student::saveToFile() const
   }
 }
 
-float Student::getGrade() const{
-    return Grade;
-  }
-
-void Student::setGrade(float g){
-    Grade = g;
+float Student::getGrade() const
+{
+  return Grade;
 }
 
-
-
+void Student::setGrade(float g)
+{
+  Grade = g;
+}
