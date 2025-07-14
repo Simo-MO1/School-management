@@ -248,14 +248,15 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   int choice;
   do
   {
-    cout << "\n_________Menu___________\n";
-    cout << "1- Add student\n";
-    cout << "2- Display all Students\n";
-    cout << "3- Save students to file\n";
-    cout << "4- Add professor\n";
-    cout << "5- Display all professors\n";
-    cout << "6- Save professors to file\n";
-    cout << "7- Exit\n";
+    cout<<"\n_________Menu___________\n";
+    cout<<"1- Add student\n";
+    cout<<"2- Display all Students\n";
+    cout<<"3- Save students to file\n";
+    cout<<"4- Add professor\n";
+    cout<<"5- Display all professors\n";
+    cout<<"6- Save professors to file\n";
+    cout<<"7- Sign Up\n";
+    cout<<"8-Exit\n";
     cout << "\n-------Enter your choice: -------\n";
 
     cin >> choice; 
@@ -306,7 +307,7 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       cout << "Invalid choice! Try again!\n";
       waitEnter();
     }
-  } while (choice != 7);
+  } while (choice != 8);
 }
 
 void StudentMenu(const string& Username, const vector<Student>&students){

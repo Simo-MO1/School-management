@@ -1,3 +1,5 @@
 admin,1234,admin
 simo,pass,student
 ali,prof,professorMohamed,Alali,student
+Mohamed,1234,student
+Ali,1234,professor
