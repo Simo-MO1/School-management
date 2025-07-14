@@ -126,8 +126,8 @@ void loadStudentsFromFile(vector<Student> &students)
   while (getline(file, line))
   {
     stringstream ss(line);
-    string idstr, agestr, fname, lname, birthp, birthd, gender, natio,gra;
-
+    string idstr, agestr, fname, lname, birthp, birthd, gender, natio, gra;
+    float grade=-1.0f;
     
     if (getline(ss, idstr, ',') &&
         getline(ss, agestr, ',') &&
@@ -137,8 +137,17 @@ void loadStudentsFromFile(vector<Student> &students)
         getline(ss, birthd, ',') &&
         getline(ss, gender, ',') &&
         getline(ss, natio, ',')&&
-        getline(ss, gra,','))
-    {
+        getline(ss, gra,',')
+        )
+    { if(ss, gra,','){
+       if(!gra.empty()){
+        try{
+          grade=stof(gra);
+        } catch(const std::invalid_argument &e){
+            cerr<<"ERROR!!"<<e.what()<<endl;
+        }
+       }
+    }
       try
       {
         Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio, stof(gra));
@@ -326,7 +335,7 @@ void ProfessorMenu(vector<Student>&students){
   do{
   cout<<"\nWelcome Professor: "<<endl;
   cout<<"\n=========Professor Meny=========\n";
-  cout<<"1-View student list\n 2-Add Grade\n 3-Log out\n";
+  cout<<"1-View student list\n2-Add Grade\n3-Log out\n";
   cout<<"Enter your choice\n"; cin>>choice;
   if(choice==1){
     displayStudents(students);

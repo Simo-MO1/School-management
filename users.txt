@@ -1,5 +1,7 @@
 admin,1234,admin
-simo,pass,student
-ali,prof,professorMohamed,Alali,student
-Mohamed,1234,student
-Ali,1234,professor
+simo,pass1234,student
+Ali,prof1234,professor
+Mohamed,12345,student
+Mehdi,123456,student
+Hanae,1234567,student
+
