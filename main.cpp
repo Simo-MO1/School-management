@@ -320,14 +320,40 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
 }
 
 void StudentMenu(const string& Username, const vector<Student>&students){
-  cout<<"\nWelcome Student: "<<Username<<endl;
+  do{cout<<"\nWelcome Student: "<<Username<<endl;
   cout<<"\n=========Student Menu=========\n";
-  for(const auto& s:students){
+  cout<<"1-View personal information\n2-View Grades\n3-Log out\n";
+  int studentChoice;
+  cout<<"Enter your choice: \n";
+  cin>>studentChoice;
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),',');
+  bool found=false;
+  if(studentChoice==1){
+    for(const auto& s:students){
      if(s.getFullName()==Username){
        s.displayInfo();
+       found=true;
        break;
      }
+     if(!found){std::cout<<"Student not found!\n";}
+     waitEnter();
+     }
+  }else if(studentChoice==2){
+   for(auto& s:students){
+    if(s.getFullName()==Username){
+      s.loadGradesFromFile();
+      s.displayGrade();
+      found=true;
+      break;
+    }
+   }
+   if(!found){std::cout<<"Student not found!\n";{waitEnter();}
+   }
+  }else if(studentChoice!=3){
+    cout<<"Invalid choice!";
+    waitEnter();
   }
+ }while(studentChoice!=3);
 }
 
 void ProfessorMenu(vector<Student>&students){

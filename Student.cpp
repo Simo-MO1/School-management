@@ -1,6 +1,10 @@
 #include "Student.h" // Case-sensitive include, ensure it matches "student.h"
+#include "grade.h"
+#include <vector>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+#include <sstream>
 
 using namespace std; // OK to use in .cpp file
 
@@ -46,4 +50,44 @@ float Student::getGrade() const
 void Student::setGrade(float g)
 {
   Grade = g;
+}
+
+void Student:: addGrade(const std::string& subject, float score){
+  grades.emplace_back(subject,score);
+}
+
+void Student::displayGrade() const{
+  if(grades.empty()){
+     cout<<"No grade available yet!\n";
+     return;
+  }
+  std::cout<<"\nGraeds for "<<getFullName()<<":\n";
+  std::cout << "-------------------------------\n";
+  std::cout<<std::left<<std::setw(15)<<"subject"<<"score";
+  std::cout << "-------------------------------\n";
+  
+  for(const auto&grade: grades){
+     std::cout<<std::left<<std::setw(15)<<grade.getSubject()<<grade.getScore()<<"\n";
+  }
+}
+
+void Student::loadGradesFromFile(){
+  ifstream file("grades.txt");
+  string line;
+  while(getline(file,line)){
+    stringstream ss(line);
+    std::string idStr, subject, scoreStr;
+    getline(ss,idStr,',');
+    getline(ss,subject,',');
+    getline(ss,scoreStr,',');
+
+    if(std::stoi(idStr)==this->getID()){
+       try{
+        float score=stof(scoreStr);
+        addGrade(subject, score);
+       } catch (const std::invalid_argument &e){
+           cerr<<"Invalid score!"<<e.what()<<"\n";
+       }
+    }
+  }
 }

@@ -1,6 +1,9 @@
 #ifndef student_h
 #define student_h
+#include "grade.h"
 #include <string>
+#include <vector>
+
 
 class Student
 {
@@ -8,6 +11,7 @@ private:
   int ID, Age;
   std::string First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality;
   float Grade;
+  std::vector<Grades>grades;
 
 public:
   Student();
@@ -19,5 +23,8 @@ public:
   void saveToFile() const;
   float getGrade()const;
   void setGrade(float g);
+  void addGrade(const std::string& subject, float score);
+  void displayGrade() const;
+  void loadGradesFromFile();
 };
 #endif
