@@ -8,8 +8,8 @@ class Grades{
     float Score;
 
     public:
-    Grades(std::string subject, float score);
-    std:: string getSubject() const;
+    Grades(const std::string& subject, float score);
+    std:: string getSubject() const {return Subject;}
     float getScore() const {return Score;}
 };
 #endif

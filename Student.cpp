@@ -42,16 +42,6 @@ void Student::saveToFile() const
   }
 }
 
-float Student::getGrade() const
-{
-  return Grade;
-}
-
-void Student::setGrade(float g)
-{
-  Grade = g;
-}
-
 void Student:: addGrade(const std::string& subject, float score){
   grades.emplace_back(subject,score);
 }

@@ -319,14 +319,14 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   } while (choice != 8);
 }
 
-void StudentMenu(const string& Username, const vector<Student>&students){
+void StudentMenu(const string& Username, vector<Student>&students){ // IMPORTANT: The 'students' parameter must be a non-const reference
+  int studentChoice;
   do{cout<<"\nWelcome Student: "<<Username<<endl;
   cout<<"\n=========Student Menu=========\n";
   cout<<"1-View personal information\n2-View Grades\n3-Log out\n";
-  int studentChoice;
   cout<<"Enter your choice: \n";
   cin>>studentChoice;
-  std::cin.ignore(std::numeric_limits<std::streamsize>::max(),',');
+  clearInput();
   bool found=false;
   if(studentChoice==1){
     for(const auto& s:students){
@@ -338,22 +338,43 @@ void StudentMenu(const string& Username, const vector<Student>&students){
      if(!found){std::cout<<"Student not found!\n";}
      waitEnter();
      }
-  }else if(studentChoice==2){
-   for(auto& s:students){
-    if(s.getFullName()==Username){
-      s.loadGradesFromFile();
-      s.displayGrade();
-      found=true;
-      break;
-    }
-   }
-   if(!found){std::cout<<"Student not found!\n";{waitEnter();}
-   }
-  }else if(studentChoice!=3){
-    cout<<"Invalid choice!";
-    waitEnter();
   }
- }while(studentChoice!=3);
+  Student* currentStudent = nullptr;
+        for (auto& s : students) { // Use non-const reference to modify 's' if needed (e.g., load grades)
+            // Assuming Username is "First_Name Last_Name"
+            // If Username is just First_Name, adjust getFullName() or comparison
+            if (s.getFullName() == Username) {
+                currentStudent = &s;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            cout << "Student not found in the system!\n";
+            waitEnter();
+            continue; // Go back to menu if student not found
+        }
+
+        switch (studentChoice) {
+            case 1:
+                currentStudent->displayInfo();
+                waitEnter();
+                break;
+            case 2:
+                currentStudent->loadGradesFromFile(); // Now exists in Student class
+                currentStudent->displayGrade();       // Now exists in Student class
+                waitEnter();
+                break;
+            case 3:
+                cout << "Logging out...\n";
+                break;
+            default:
+                cout << "Invalid choice! Please try again.\n";
+                waitEnter();
+                break;
+        }
+    } while (studentChoice != 3);
 }
 
 void ProfessorMenu(vector<Student>&students){
