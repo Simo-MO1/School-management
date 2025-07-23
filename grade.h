@@ -1,6 +1,7 @@
 #ifndef grade_h
 #define grade_h
 #include<iostream>
+#include<string>
 
 class Grades{
     private:

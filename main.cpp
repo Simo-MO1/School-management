@@ -381,7 +381,7 @@ void ProfessorMenu(vector<Student>&students){
   int choice;
   do{
   cout<<"\nWelcome Professor: "<<endl;
-  cout<<"\n=========Professor Meny=========\n";
+  cout<<"\n=========Professor Menu=========\n";
   cout<<"1-View student list\n2-Add Grade\n3-Log out\n";
   cout<<"Enter your choice\n"; cin>>choice;
   if(choice==1){
