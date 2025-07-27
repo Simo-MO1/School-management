@@ -42,6 +42,14 @@ void Student::saveToFile() const
   }
 }
 
+float Student:: getGrade()const{
+  return Grade;
+}
+
+void Student:: setGrade(float Grade) {
+  this->Grade=Grade;
+}
+
 void Student:: addGrade(const std::string& subject, float score){
   grades.emplace_back(subject,score);
 }
@@ -51,7 +59,7 @@ void Student::displayGrade() const{
      cout<<"No grade available yet!\n";
      return;
   }
-  std::cout<<"\nGraeds for "<<getFullName()<<":\n";
+  std::cout<<"\nGrades for "<<getFullName()<<":\n";
   std::cout << "-------------------------------\n";
   std::cout<<std::left<<std::setw(15)<<"subject"<<"score";
   std::cout << "-------------------------------\n";
@@ -63,6 +71,10 @@ void Student::displayGrade() const{
 
 void Student::loadGradesFromFile(){
   ifstream file("grades.txt");
+  if (!file.is_open()){
+    cerr<<"Error: Could not open grades.txt for reading!";
+    return;
+  }
   string line;
   while(getline(file,line)){
     stringstream ss(line);
@@ -71,13 +83,17 @@ void Student::loadGradesFromFile(){
     getline(ss,subject,',');
     getline(ss,scoreStr,',');
 
-    if(std::stoi(idStr)==this->getID()){
+    if(std::stoi(idStr)==this->getID()){  //this line need to be clarified
        try{
-        float score=stof(scoreStr);
+        float score=stof(scoreStr);   //this one too
         addGrade(subject, score);
        } catch (const std::invalid_argument &e){
            cerr<<"Invalid score!"<<e.what()<<"\n";
        }
+       catch(const std::out_of_range &e){
+        cerr<<"Score out of range in grades.txt: "<<e.what()<<"\n";
+       }
     }
   }
+  file.close();
 }

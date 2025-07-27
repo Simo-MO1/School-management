@@ -33,7 +33,7 @@ bool User::authenticate(const string &inputUser, const string &inputPass, string
     {
       if (usern == inputUser && passw == inputPass)
       {
-        outRole = rol;
+        outRole = rol; //this need to be clarified too
         file.close(); // Close file as soon as authenticated
         return true;
       }
