@@ -1,7 +1,7 @@
-admin,1234,admin
-simo,pass1234,student
-Ali,prof1234,professor
-Mohamed,12345,student
-Mehdi,123456,student
-Hanae,1234567,student
+01,1234,admin
+1,prof11234,professor
+201,2011234,student
+202,2021234,student
+203,2031234,student
 
+2,prof21234,professor

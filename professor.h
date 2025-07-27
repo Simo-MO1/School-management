@@ -21,5 +21,6 @@ public:
   int getID() const;
   std::string getFullName() const;
   void saveToFile() const;
+  void addGrade();
 };
 #endif

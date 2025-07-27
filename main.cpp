@@ -319,9 +319,9 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   } while (choice != 8);
 }
 
-void StudentMenu(const string& Username, vector<Student>&students){ // IMPORTANT: The 'students' parameter must be a non-const reference
+void StudentMenu(int ID, vector<Student>&students){ // IMPORTANT: The 'students' parameter must be a non-const reference
   int studentChoice;
-  do{cout<<"\nWelcome Student: "<<Username<<endl;
+  do{cout<<"\nWelcome Student: "<<ID<<endl;
   cout<<"\n=========Student Menu=========\n";
   cout<<"1-View personal information\n2-View Grades\n3-Log out\n";
   cout<<"Enter your choice: \n";
@@ -330,7 +330,7 @@ void StudentMenu(const string& Username, vector<Student>&students){ // IMPORTANT
   bool found=false;
   if(studentChoice==1){
     for(const auto& s:students){
-     if(s.getFullName()==Username){
+     if(s.getID()==ID){
        s.displayInfo();
        found=true;
        break;
@@ -343,7 +343,7 @@ void StudentMenu(const string& Username, vector<Student>&students){ // IMPORTANT
         for (auto& s : students) { // Use non-const reference to modify 's' if needed (e.g., load grades)
             // Assuming Username is "First_Name Last_Name"
             // If Username is just First_Name, adjust getFullName() or comparison
-            if (s.getFullName() == Username) {
+            if (s.getID() == ID) {
                 currentStudent = &s;
                 found = true;
                 break;
@@ -377,30 +377,48 @@ void StudentMenu(const string& Username, vector<Student>&students){ // IMPORTANT
     } while (studentChoice != 3);
 }
 
-void ProfessorMenu(vector<Student>&students){
+void ProfessorMenu(int ProfID, const vector<Professor>&professors, vector<Student>&students){
   int choice;
-  do{
-  cout<<"\nWelcome Professor: "<<endl;
-  cout<<"\n=========Professor Menu=========\n";
-  cout<<"1-View student list\n2-Add Grade\n3-Log out\n";
-  cout<<"Enter your choice\n"; cin>>choice;
-  if(choice==1){
-    displayStudents(students);
-  } else if(choice==2){
-    int id;
-    float grade;
-    cout<<"Enter Student's ID: \n"; cin>>id;
-    cout<<"Enter his/her grade: \n"; cin>>grade;
-    for(auto& s:students){
-      if(s.getID()==id){
-        s.setGrade(grade);
-        cout<<"Grade updated!\n";
-        break;
-      }
+  Professor currentProfessor;
+  bool found=false;
+  for(const auto& prof:professors){
+    if(prof.getID()==ProfID){
+       currentProfessor=prof; //need to be clarified tooo
+       found=true;
+       break;
     }
-    waitEnter();
   }
-  }while(choice!=3);
+
+  if(!found){
+    cout<<"Professor is not found!\n";
+    return;
+  }
+
+  do{cout << "\n===== Professor Menu =====\n";
+        cout << "1. View Personal Info\n";
+        cout << "2. Add Grade\n";
+        cout << "3. Logout\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        
+        switch(choice){
+          case 1:
+          currentProfessor.displayInfo();
+          break;
+
+          case 2:
+          currentProfessor.addGrade();
+          break;
+
+          case 3:
+          cout<<"Logging out!\n";
+          break;
+
+          default:
+          cout<<"Invalid choice!Try again\n";
+        }
+
+      }while(choice!=3);
 }
 
 int main()
@@ -412,14 +430,15 @@ int main()
   // You might want to load professors from file too, similar to students
   // loadProfessorsFromFile(profs);
 
-  string username, password, role;
-  cout << "Username: ";
-  cin >> username;
+  string password, role;
+  int ProfID;
+  cout << "Enter your ID: ";
+  cin >> ProfID;
   cout << "Password: ";
   cin >> password;
   clearInput(); 
 
-  if (!User::authenticate(username, password, role))
+  if (!User::authenticate(ProfID, password, role))
   {
     cout << "Login failed. Exiting...\n";
     waitEnter(); 
@@ -428,8 +447,8 @@ int main()
   cout << "Welcome " << role << "!\n";
   if (role == "admin")
     adminMenu(students, profs);
-  else if(role == "student") StudentMenu(username, students);
-  else if(role == "professor") ProfessorMenu(students);
+  else if(role == "student") StudentMenu(ProfID, students);
+  else if(role == "professor") ProfessorMenu( ProfID, profs, students);
   else
     cout << "Unkown Role!...\n";
 

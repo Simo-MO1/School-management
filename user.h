@@ -5,17 +5,18 @@
 class User
 {
 private:
-  std::string Username, Password, Role; 
+  std::string Password, Role; 
+  int ID;
 
 public:
   User();
-  User(std::string usern, std::string passw, std::string rol); 
+  User(int IDn, std::string passw, std::string rol); 
 
-  std::string getUsername() const;
+  int getID() const;
   std::string getPassword() const; 
   std::string getRole() const;     
 
-  static bool authenticate(const std::string &inputUser, const std::string &inputPass, std::string &outRole);
+  static bool authenticate(int inputID, const std::string &inputPass, std::string &outRole);
   static void registerUser();
 };
 #endif

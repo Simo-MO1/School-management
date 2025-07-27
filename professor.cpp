@@ -37,3 +37,28 @@ void Professor::saveToFile() const
     cerr << "ERROR! Unable to open professor.txt for writing!\n";
   }
 }
+
+void Professor:: addGrade(){
+  int ID;
+  string Subject;
+  float Grade;
+
+  cout<<"\n Enter student's ID:\n";
+  cin>>ID;
+
+  cout<<"\Enter the subject:\n";
+  cin.ignore();
+  getline(cin,Subject);
+
+  cout<<"\nEnter his/her grade:\n";
+  cin>>Grade;
+
+  ofstream out("grades.txt",ios::app);
+  if(out.is_open()){
+    out<<ID<<", "<<Subject<<": "<<Grade<<"\n";
+    out.close();
+    cout<<"Grades saved successfully\n";
+  }else{
+    cerr<<"Unable to open the file!\n";
+  }
+}
