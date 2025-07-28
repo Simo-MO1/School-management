@@ -445,6 +445,7 @@ int main()
     return 0;
   }
   cout << "Welcome " << role << "!\n";
+  for(auto&c:role) c=tolower(c);  //everything wil be in lowercase
   if (role == "admin")
     adminMenu(students, profs);
   else if(role == "student") StudentMenu(ProfID, students);

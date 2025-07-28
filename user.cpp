@@ -61,4 +61,21 @@ void User:: registerUser(){
       outFile.close();
       cout<<"you've been registered succesfully\n";
     }
+
+    if(Role=="professor"){
+      int ID;
+      string Subject;
+      cout<<"Enter your ID:\n";
+      cin>>ID;
+      cout<<"Enter your Subject:\n";
+      cin.ignore();
+      getline(cin,Subject);
+
+      ofstream pFile("professor.txt, ios::app");
+      if(pFile.is_open()){
+        pFile<<ID<<","<<Subject<<endl;
+        pFile.close();
+        cout<<"Data saved successefully!"<<endl;
+      } else{cerr<<"could not open the file!";}
+    }
 }
