@@ -127,7 +127,7 @@ void loadStudentsFromFile(vector<Student> &students)
   {
     stringstream ss(line);
     string idstr, agestr, fname, lname, birthp, birthd, gender, natio, gra;
-    float grade=-1.0f;
+    float grade=-1.0f;  //i forgot what's this
     
     if (getline(ss, idstr, ',') &&
         getline(ss, agestr, ',') &&
@@ -250,6 +250,24 @@ void saveAllProfessorsToFile(vector<Professor> &profs)
   outFile.close(); 
   cout << "Professors saved.\n";
   waitEnter();
+}
+
+void loadAllProfessorsFromFile(vector<Professor>&professors){
+ ifstream PoutFile("professor.txt");
+ if(!PoutFile.is_open()){
+  cerr<<"File is not found or couldn't be opened! Starting with no professors\n";
+  waitEnter();
+  return;
+ }
+
+ string line;
+
+ while(getline(PoutFile,line)){
+  stringstream ss(line);
+  string strID, strAge, fname, lname, spec;
+  float sal=-1.0f;
+ }
+
 }
 
 void adminMenu(vector<Student> &students, vector<Professor> &profs)
