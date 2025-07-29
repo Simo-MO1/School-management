@@ -127,7 +127,7 @@ void loadStudentsFromFile(vector<Student> &students)
   {
     stringstream ss(line);
     string idstr, agestr, fname, lname, birthp, birthd, gender, natio, gra;
-    float grade=-1.0f;  //i forgot what's this
+    float grade=-1.0f;  //i forgot what's this 
     
     if (getline(ss, idstr, ',') &&
         getline(ss, agestr, ',') &&
@@ -264,8 +264,25 @@ void loadAllProfessorsFromFile(vector<Professor>&professors){
 
  while(getline(PoutFile,line)){
   stringstream ss(line);
-  string strID, strAge, fname, lname, spec;
-  float sal=-1.0f;
+  string strID, strAge, fname, lname, spec, sal;
+  float sala=-1.0f;
+
+  if(getline(ss,strID,',')&&
+     getline(ss,strAge,',')&&
+     getline(ss, fname,',')&&
+     getline(ss,lname,',')&&
+     getline(ss,spec,',')&&
+     getline(ss,sal,',')){
+      if(ss,sal,','){
+         if(!sal.empty()){
+          try{
+            sala=stof(sal);
+          }catch(const std::invalid_argument &e){
+            cerr<<"Error!"<<e.what()<<endl;
+          }
+         }
+      }
+     }
  }
 
 }
