@@ -162,10 +162,7 @@ void loadStudentsFromFile(vector<Student> &students)
         cerr << "Value out of range during student load: " << e.what() << " in line: " << line << endl;
       }
     }
-    else
-    {
-      cerr << "Skipping malformed line in students.txt: " << line << endl;
-    }
+    
   }
   file.close();
   cout << "Students loaded from file.\n";
@@ -282,9 +279,17 @@ void loadAllProfessorsFromFile(vector<Professor>&professors){
           }
          }
       }
-     }
- }
-
+     }try{
+  Professor p(stoi(strID),stoi(strAge), fname, lname, spec, stof(sal));
+  professors.push_back(p);
+ } catch(const std::invalid_argument &e){
+    cerr<<"Error converting string to int during professor load: "<<e.what()<<"in line"<<line<<endl;
+ } catch(const std::out_of_range &e){
+    cerr<<"Value out of range during student load: "<<e.what()<<"in line"<<line<<endl;
+ } 
+ } 
+ PoutFile.close();
+ cout<<"Professors loaded from file!\n";
 }
 
 void adminMenu(vector<Student> &students, vector<Professor> &profs)
@@ -462,6 +467,7 @@ int main()
   vector<Professor> profs;
 
   loadStudentsFromFile(students);
+  loadAllProfessorsFromFile(profs);
   // You might want to load professors from file too, similar to students
   // loadProfessorsFromFile(profs);
 

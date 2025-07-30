@@ -2,15 +2,24 @@
 #define grade_h
 #include<iostream>
 #include<string>
+#include<fstream>
+#include<sstream>
+#include<vector>
 
 class Grades{
     private:
+    int ID;
     std::string Subject;
-    float Score;
+    std::vector<int>Scores;
 
     public:
-    Grades(const std::string& subject, float score);
+    Grades(){}
+    Grades(const int& ID, const std::string& subject, const std::vector<int>& scores);
+    int getID() const;
     std:: string getSubject() const;
-    float getScore() const;
+    std:: vector<int> getScores() const;
+    void displayGrades() const;
+    void saveGradesToFile() const;
+    static Grades loadGradesFromFile();
 };
 #endif

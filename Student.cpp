@@ -42,31 +42,8 @@ void Student::saveToFile() const
   }
 }
 
-float Student:: getGrade()const{
-  return Grade;
-}
-
-void Student:: setGrade(float Grade) {
-  this->Grade=Grade;
-}
-
 void Student:: addGrade(const std::string& subject, float score){
   grades.emplace_back(subject,score);
-}
-
-void Student::displayGrade() const{
-  if(grades.empty()){
-     cout<<"No grade available yet!\n";
-     return;
-  }
-  std::cout<<"\nGrades for "<<getFullName()<<":\n";
-  std::cout << "-------------------------------\n";
-  std::cout<<std::left<<std::setw(15)<<"subject"<<"score";
-  std::cout << "-------------------------------\n";
-  
-  for(const auto&grade: grades){
-     std::cout<<std::left<<std::setw(15)<<grade.getSubject()<<grade.getScore()<<"\n";
-  }
 }
 
 void Student::loadGradesFromFile(){

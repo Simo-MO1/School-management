@@ -24,7 +24,5 @@ public:
   float getGrade()const;
   void setGrade(float g);
   void addGrade(const std::string& subject, float score);
-  void displayGrade() const;
-  void loadGradesFromFile();
 };
 #endif
