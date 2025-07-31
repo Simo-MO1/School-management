@@ -45,32 +45,3 @@ void Student::saveToFile() const
 void Student:: addGrade(const std::string& subject, float score){
   grades.emplace_back(subject,score);
 }
-
-void Student::loadGradesFromFile(){
-  ifstream file("grades.txt");
-  if (!file.is_open()){
-    cerr<<"Error: Could not open grades.txt for reading!";
-    return;
-  }
-  string line;
-  while(getline(file,line)){
-    stringstream ss(line);
-    std::string idStr, subject, scoreStr;
-    getline(ss,idStr,',');
-    getline(ss,subject,',');
-    getline(ss,scoreStr,',');
-
-    if(std::stoi(idStr)==this->getID()){  //this line need to be clarified
-       try{
-        float score=stof(scoreStr);   //this one too
-        addGrade(subject, score);
-       } catch (const std::invalid_argument &e){
-           cerr<<"Invalid score!"<<e.what()<<"\n";
-       }
-       catch(const std::out_of_range &e){
-        cerr<<"Score out of range in grades.txt: "<<e.what()<<"\n";
-       }
-    }
-  }
-  file.close();
-}

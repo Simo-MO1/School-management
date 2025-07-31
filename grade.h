@@ -1,25 +1,23 @@
 #ifndef grade_h
 #define grade_h
-#include<iostream>
 #include<string>
-#include<fstream>
-#include<sstream>
 #include<vector>
 
 class Grades{
     private:
     int ID;
     std::string Subject;
-    std::vector<int>Scores;
+    std::vector<float>Scores;
 
     public:
     Grades(){}
-    Grades(const int& ID, const std::string& subject, const std::vector<int>& scores);
+    Grades(const int& ID, const std::string& subject, const std::vector<float>& scores);
     int getID() const;
     std:: string getSubject() const;
-    std:: vector<int> getScores() const;
+    std:: vector<float> getScores() const;
+    void addGrade();
     void displayGrades() const;
     void saveGradesToFile() const;
-    static Grades loadGradesFromFile();
+    static std::vector<Grades> loadGradesFromFile(int gID);
 };
 #endif
