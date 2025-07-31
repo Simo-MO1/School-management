@@ -41,7 +41,3 @@ void Student::saveToFile() const
     cerr << "Unable to open students.txt for writing!!\n";
   }
 }
-
-void Student:: addGrade(const std::string& subject, float score){
-  grades.emplace_back(subject,score);
-}

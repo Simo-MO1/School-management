@@ -402,8 +402,8 @@ void StudentMenu(int ID, vector<Student>&students){ // IMPORTANT: The 'students'
                 waitEnter();
                 break;
             case 2:
-                currentStudent->loadGradesFromFile(); // Now exists in Student class
-                currentStudent->displayGrade();       // Now exists in Student class
+                currentStudent->loadGradesFromFile(); 
+                currentStudent->displayGrade();       
                 waitEnter();
                 break;
             case 3:
