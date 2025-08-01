@@ -19,5 +19,7 @@ class Grades{
     void displayGrades() const;
     void saveGradesToFile() const;
     static std::vector<Grades> loadGradesFromFile(int gID);
+    static void editGrade(int ID, const std::string& Subject);
+    static void deleteGrade(int ID, const std::string& Subject);
 };
 #endif
