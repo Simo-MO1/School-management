@@ -21,8 +21,7 @@ public:
   int getID() const;
   std::string getFullName() const;
   void saveToFile() const;
-  float getGrade()const;
-  void setGrade(float g);
-  void addGrade(const std::string& subject, float score);
+  void loadGradesFromFile();
+  void displayGrade() const;
 };
 #endif

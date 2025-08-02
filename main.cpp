@@ -1,11 +1,11 @@
-#include <iostream>
-#include <limits>
-#include <vector>
-#include <fstream>
+#include<iostream>
+#include<limits>
+#include<vector>
+#include<fstream>
 #include "student.h"
 #include "professor.h"
 #include "user.h"
-#include <sstream>
+#include<sstream>
 
 // It's generally better to avoid 'using namespace std;' in headers,
 // but for .cpp files, it's common.
@@ -361,6 +361,8 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
 
 void StudentMenu(int ID, vector<Student>&students){ // IMPORTANT: The 'students' parameter must be a non-const reference
   int studentChoice;
+  Student* currentStudent = nullptr; //this need to be clarified
+
   do{cout<<"\nWelcome Student: "<<ID<<endl;
   cout<<"\n=========Student Menu=========\n";
   cout<<"1-View personal information\n2-View Grades\n3-Log out\n";
@@ -373,13 +375,12 @@ void StudentMenu(int ID, vector<Student>&students){ // IMPORTANT: The 'students'
      if(s.getID()==ID){
        s.displayInfo();
        found=true;
-       break;
+       break; //why break inside if and not outside??
      }
      if(!found){std::cout<<"Student not found!\n";}
      waitEnter();
      }
   }
-  Student* currentStudent = nullptr;
         for (auto& s : students) { // Use non-const reference to modify 's' if needed (e.g., load grades)
             // Assuming Username is "First_Name Last_Name"
             // If Username is just First_Name, adjust getFullName() or comparison
@@ -419,11 +420,11 @@ void StudentMenu(int ID, vector<Student>&students){ // IMPORTANT: The 'students'
 
 void ProfessorMenu(int ProfID, const vector<Professor>&professors, vector<Student>&students){
   int choice;
-  Professor currentProfessor;
+  const Professor* currentProfessor=nullptr;
   bool found=false;
   for(const auto& prof:professors){
     if(prof.getID()==ProfID){
-       currentProfessor=prof; //need to be clarified tooo
+       currentProfessor=&prof; //need to be clarified tooo
        found=true;
        break;
     }
@@ -434,23 +435,52 @@ void ProfessorMenu(int ProfID, const vector<Professor>&professors, vector<Studen
     return;
   }
 
-  do{cout << "\n===== Professor Menu =====\n";
-        cout << "1. View Personal Info\n";
-        cout << "2. Add Grade\n";
-        cout << "3. Logout\n";
-        cout << "Enter choice: ";
-        cin >> choice;
+  do{cout<<"\n===== Professor Menu =====\n";
+        cout<<"1. View Personal Info\n";
+        cout<<"2. Add Grade\n";
+        cout<<"3. Edit Grade\n";
+        cout<<"4. Delete Grade\n";
+        cout<<"5. Logout\n";
+        cout<<"Enter choice: ";
+        cin>>choice;
+        clearInput();
         
-        switch(choice){
+        switch(choice){   //NOTE: if we declare new variables inside a case we should add {} for all case
           case 1:
-          currentProfessor.displayInfo();
+          currentProfessor->displayInfo();
           break;
 
-          case 2:
-          currentProfessor.addGrade();
-          break;
+          case 2:{
+          Grades g;
+          g.addGrade();
+          waitEnter();
+          break;}
 
-          case 3:
+          case 3:{
+          int ID;
+          string Subject;
+          cout<<"Enter Student ID: \n";
+          cin>>ID;
+          clearInput();
+          cout<<"Enter Grade: \n";
+          getline(cin, Subject);
+          Grades::editGrade(ID, Subject);
+          waitEnter();
+          break;}
+
+          case 4:{
+          int ID;
+          string Subject;
+          cout<<"Enter Student ID: \n";
+          cin>>ID;
+          clearInput();
+          cout<<"Enter Grade: \n";
+          getline(cin, Subject);
+          Grades::deleteGrade(ID, Subject);
+          waitEnter();
+          break;}
+
+          case 5:
           cout<<"Logging out!\n";
           break;
 
@@ -458,7 +488,7 @@ void ProfessorMenu(int ProfID, const vector<Professor>&professors, vector<Studen
           cout<<"Invalid choice!Try again\n";
         }
 
-      }while(choice!=3);
+      }while(choice!=5);
 }
 
 int main()

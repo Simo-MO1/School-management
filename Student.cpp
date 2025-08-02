@@ -41,3 +41,12 @@ void Student::saveToFile() const
     cerr << "Unable to open students.txt for writing!!\n";
   }
 }
+
+void Student::displayGrade() const{
+  grades.displayGrades();
+}
+
+void Student::loadGradesFromFile(){
+   Grades g;
+  g.displayGrades();
+}
