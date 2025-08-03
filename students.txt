@@ -1,6 +1,2 @@
-200,17,Mohamed,Alali,Fes,17/12/2005,Male,Moroccon
-201,18,Mehdi,Moulchi,Meknes,15/07/2004,Male,Moroccan
-202,17,Malak,lmrani,Rabat,28/03/2006,Female,Moroccan
-200,s1234
-201,s11234
-202,s21234
+200,19,Mohamed,Alali,Fes,17/12/2005,Male,Moroccan
+200,s01234

@@ -43,7 +43,8 @@ void Student::saveToFile() const
 }
 
 void Student::displayGrade() const{
-  grades.displayGrades();
+  Grades g;
+  g.displayGrades();
 }
 
 void Student::loadGradesFromFile(){

@@ -74,7 +74,7 @@ void addStudent(vector<Student> &students)
   waitEnter();
 }
 
-void displayStudents(const vector<Student> students)
+void displayStudents(const vector<Student>& students)
 {
   if (students.empty())
   {
@@ -83,7 +83,7 @@ void displayStudents(const vector<Student> students)
     return;
   }
 
-  cout << "\nAll students\n";
+  cout << "\nAll students: \n";
   for (const auto &student : students)
   {
     cout << "\n-----------------------\n";

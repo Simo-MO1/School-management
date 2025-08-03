@@ -2,6 +2,6 @@
 
 
 
-200,s1234,student
-201,s11234,student
-202,s21234,student
+
+200,s01234,student
+1,t01234,professor

@@ -4,7 +4,6 @@
 #include <iostream>
 #include <iomanip>
 
-Grades::Grades() {}
 Grades::Grades(const int &id, const std::string &subject, const std::vector<float> &scores) : ID(id), Subject(subject), Scores(scores) {}
 int Grades::getID() const { return ID; }
 std::string Grades::getSubject() const { return Subject; }
