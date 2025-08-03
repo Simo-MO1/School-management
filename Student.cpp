@@ -51,3 +51,15 @@ void Student::loadGradesFromFile(){
    Grades g;
   g.displayGrades();
 }
+
+std::istream& operator>>(std::istream& in, Student& s){
+   in>>s.ID;
+   in>>s.Age;
+   std::getline(in, s.First_Name);
+   std::getline(in, s.Last_Name);
+   std::getline(in, s.Birth_Place);
+   std::getline(in, s.Birth_Date);
+   std::getline(in, s.Sex);
+   std::getline(in, s.Nationality);
+   return in;
+}

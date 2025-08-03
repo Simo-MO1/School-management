@@ -23,5 +23,6 @@ public:
   void saveToFile() const;
   void loadGradesFromFile();
   void displayGrade() const;
+  friend std:: istream& operator >>(std::istream& in, Student& s); // neet to be clarified (what does istream mean and do?)
 };
 #endif

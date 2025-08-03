@@ -76,19 +76,22 @@ void addStudent(vector<Student> &students)
 
 void displayStudents(const vector<Student>& students)
 {
-  if (students.empty())
-  {
-    cout << "No student in the system\n";
-    waitEnter();
-    return;
+  ifstream inFile("students.txt");
+  if(!inFile){
+    cerr<<"Unable to open the file\n";
+  }
+  Student s;
+  bool found=false;
+  cout<<"\nAll students: \n";
+  while(inFile>>s){
+    cout << "\n---------------------------\n";
+    s.displayInfo();
+    cout << "\n---------------------------\n";
+    found=true;
   }
 
-  cout << "\nAll students: \n";
-  for (const auto &student : students)
-  {
-    cout << "\n-----------------------\n";
-    student.displayInfo();
-    cout << "\n-----------------------\n";
+  if(!found){
+    cout<<"No student in the system\n";
   }
   waitEnter();
 }
@@ -122,6 +125,7 @@ void loadStudentsFromFile(vector<Student> &students)
     return;
   }
 
+  students.clear(); 
   string line;
   while (getline(file, line))
   {
@@ -139,18 +143,19 @@ void loadStudentsFromFile(vector<Student> &students)
         getline(ss, natio, ',')&&
         getline(ss, gra,',')
         )
-    { if(ss, gra,','){
+    { 
        if(!gra.empty()){
         try{
           grade=stof(gra);
+          cout << "Reading line: " << line << endl;
         } catch(const std::invalid_argument &e){
             cerr<<"ERROR!!"<<e.what()<<endl;
         }
        }
-    }
+    
       try
       {
-        Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio, stof(gra));
+        Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio, grade);
         students.push_back(s);
       }
       catch (const std::invalid_argument &e)
@@ -325,6 +330,7 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       break;
 
     case 2:
+      loadStudentsFromFile(students);
       displayStudents(students);
       break;
 
