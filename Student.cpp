@@ -52,7 +52,7 @@ void Student::loadGradesFromFile(){
   g.displayGrades();
 }
 
-std::istream& operator>>(std::istream& in, Student& s){
+std::istream& operator>>(std::istream& in, Student& s){  //this is confusing
    in>>s.ID;
    in>>s.Age;
    std::getline(in, s.First_Name);

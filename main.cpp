@@ -1,11 +1,11 @@
-#include<iostream>
-#include<limits>
-#include<vector>
-#include<fstream>
+#include <iostream>
+#include <limits>
+#include <vector>
+#include <fstream>
 #include "student.h"
 #include "professor.h"
 #include "user.h"
-#include<sstream>
+#include <sstream>
 
 // It's generally better to avoid 'using namespace std;' in headers,
 // but for .cpp files, it's common.
@@ -60,45 +60,47 @@ void addStudent(vector<Student> &students)
   getline(cin, Birth_Place); // Use getline for birth place
 
   cout << "Enter your Gender (Male/Female): ";
-  getline(cin, Sex); 
+  getline(cin, Sex);
 
   cout << "Enter your nationality: ";
-  getline(cin, Nationality); 
+  getline(cin, Nationality);
 
   // Corrected constructor call based on student.h order:
   Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality, Grade);
   students.push_back(s);
-  cout << "✅ Student added!!\n";
+  cout << " Student added!!\n";
 
-  cout<<"Student added!!\n";
   waitEnter();
 }
 
-void displayStudents(const vector<Student>& students)
+void displayStudents(const vector<Student> &students)
 {
   ifstream inFile("students.txt");
-  if(!inFile){
-    cerr<<"Unable to open the file\n";
+  if (!inFile)
+  {
+    cerr << "Unable to open the file\n";
   }
   Student s;
-  bool found=false;
-  cout<<"\nAll students: \n";
-  while(inFile>>s){
+  bool found = false;
+  cout << "\nAll students: \n";
+  while (inFile >> s)
+  {
     cout << "\n---------------------------\n";
     s.displayInfo();
     cout << "\n---------------------------\n";
-    found=true;
+    found = true;
   }
 
-  if(!found){
-    cout<<"No student in the system\n";
+  if (!found)
+  {
+    cout << "No student in the system\n";
   }
   waitEnter();
 }
 
 void saveAllToFile(const vector<Student> &students)
 {
-  ofstream outFile("students.txt");
+  ofstream outFile("students.txt", ios::app);
   if (!outFile.is_open())
   {
     cerr << "ERROR! Unable to open students.txt for writing!\n";
@@ -108,7 +110,7 @@ void saveAllToFile(const vector<Student> &students)
 
   for (const auto &student : students)
   {
-    student.saveToFile(); 
+    student.saveToFile();
   }
   outFile.close();
   cout << "All students saved to file\n";
@@ -117,6 +119,7 @@ void saveAllToFile(const vector<Student> &students)
 
 void loadStudentsFromFile(vector<Student> &students)
 {
+  students.clear();
   ifstream file("students.txt");
   if (!file.is_open())
   {
@@ -125,14 +128,16 @@ void loadStudentsFromFile(vector<Student> &students)
     return;
   }
 
-  students.clear(); 
+  students.clear();
   string line;
   while (getline(file, line))
+    if (line.empty())
+      continue;
   {
     stringstream ss(line);
     string idstr, agestr, fname, lname, birthp, birthd, gender, natio, gra;
-    float grade=-1.0f;  //i forgot what's this 
-    
+    float grade = -1.0f; // i forgot what's this
+
     if (getline(ss, idstr, ',') &&
         getline(ss, agestr, ',') &&
         getline(ss, fname, ',') &&
@@ -140,19 +145,22 @@ void loadStudentsFromFile(vector<Student> &students)
         getline(ss, birthp, ',') &&
         getline(ss, birthd, ',') &&
         getline(ss, gender, ',') &&
-        getline(ss, natio, ',')&&
-        getline(ss, gra,',')
-        )
-    { 
-       if(!gra.empty()){
-        try{
-          grade=stof(gra);
+        getline(ss, natio, ',') &&
+        getline(ss, gra, ','))
+    {
+      if (!gra.empty())
+      {
+        try
+        {
+          grade = stof(gra);
           cout << "Reading line: " << line << endl;
-        } catch(const std::invalid_argument &e){
-            cerr<<"ERROR!!"<<e.what()<<endl;
         }
-       }
-    
+        catch (const std::invalid_argument &e)
+        {
+          cerr << "ERROR!!" << e.what() << endl;
+        }
+      }
+
       try
       {
         Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio, grade);
@@ -167,16 +175,15 @@ void loadStudentsFromFile(vector<Student> &students)
         cerr << "Value out of range during student load: " << e.what() << " in line: " << line << endl;
       }
     }
-    
   }
   file.close();
-  cout << "Students loaded from file.\n";
+  cout << " Students loaded from file: " << students.size() << " student(s).\n";
 }
 
 void addProfessor(vector<Professor> &profs)
 {
   int ID, Age;
-  float Salary; 
+  float Salary;
   string First_Name, Last_Name, Speciality;
 
   cout << "Enter Professor ID: ";
@@ -217,7 +224,7 @@ void addProfessor(vector<Professor> &profs)
   waitEnter();
 }
 
-void displayProfessors(vector<Professor> &profs) 
+void displayProfessors(vector<Professor> &profs)
 {
   if (profs.empty())
   {
@@ -247,54 +254,69 @@ void saveAllProfessorsToFile(vector<Professor> &profs)
 
   for (const auto &prof : profs)
   {
-    prof.saveToFile(); 
+    prof.saveToFile();
   }
-  outFile.close(); 
+  outFile.close();
   cout << "Professors saved.\n";
   waitEnter();
 }
 
-void loadAllProfessorsFromFile(vector<Professor>&professors){
- ifstream PoutFile("professor.txt");
- if(!PoutFile.is_open()){
-  cerr<<"File is not found or couldn't be opened! Starting with no professors\n";
-  waitEnter();
-  return;
- }
+void loadAllProfessorsFromFile(vector<Professor> &professors)
+{
+  ifstream PoutFile("professor.txt");
+  if (!PoutFile.is_open())
+  {
+    cerr << "File is not found or couldn't be opened! Starting with no professors\n";
+    waitEnter();
+    return;
+  }
 
- string line;
+  string line;
 
- while(getline(PoutFile,line)){
-  stringstream ss(line);
-  string strID, strAge, fname, lname, spec, sal;
-  float sala=-1.0f;
+  while (getline(PoutFile, line))
+  {
+    stringstream ss(line);
+    string strID, strAge, fname, lname, spec, sal;
+    float sala = -1.0f;
 
-  if(getline(ss,strID,',')&&
-     getline(ss,strAge,',')&&
-     getline(ss, fname,',')&&
-     getline(ss,lname,',')&&
-     getline(ss,spec,',')&&
-     getline(ss,sal,',')){
-      if(ss,sal,','){
-         if(!sal.empty()){
-          try{
-            sala=stof(sal);
-          }catch(const std::invalid_argument &e){
-            cerr<<"Error!"<<e.what()<<endl;
+    if (getline(ss, strID, ',') &&
+        getline(ss, strAge, ',') &&
+        getline(ss, fname, ',') &&
+        getline(ss, lname, ',') &&
+        getline(ss, spec, ',') &&
+        getline(ss, sal, ','))
+    {
+      if (ss, sal, ',')
+      {
+        if (!sal.empty())
+        {
+          try
+          {
+            sala = stof(sal);
           }
-         }
+          catch (const std::invalid_argument &e)
+          {
+            cerr << "Error!" << e.what() << endl;
+          }
+        }
       }
-     }try{
-  Professor p(stoi(strID),stoi(strAge), fname, lname, spec, stof(sal));
-  professors.push_back(p);
- } catch(const std::invalid_argument &e){
-    cerr<<"Error converting string to int during professor load: "<<e.what()<<"in line"<<line<<endl;
- } catch(const std::out_of_range &e){
-    cerr<<"Value out of range during student load: "<<e.what()<<"in line"<<line<<endl;
- } 
- } 
- PoutFile.close();
- cout<<"Professors loaded from file!\n";
+    }
+    try
+    {
+      Professor p(stoi(strID), stoi(strAge), fname, lname, spec, stof(sal));
+      professors.push_back(p);
+    }
+    catch (const std::invalid_argument &e)
+    {
+      cerr << "Error converting string to int during professor load: " << e.what() << "in line" << line << endl;
+    }
+    catch (const std::out_of_range &e)
+    {
+      cerr << "Value out of range during student load: " << e.what() << "in line" << line << endl;
+    }
+  }
+  PoutFile.close();
+  cout << "Professors loaded from file!\n";
 }
 
 void adminMenu(vector<Student> &students, vector<Professor> &profs)
@@ -302,25 +324,25 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   int choice;
   do
   {
-    cout<<"\n_________Menu___________\n";
-    cout<<"1- Add student\n";
-    cout<<"2- Display all Students\n";
-    cout<<"3- Save students to file\n";
-    cout<<"4- Add professor\n";
-    cout<<"5- Display all professors\n";
-    cout<<"6- Save professors to file\n";
-    cout<<"7- Sign Up\n";
-    cout<<"8-Exit\n";
+    cout << "\n_________Menu___________\n";
+    cout << "1- Add student\n";
+    cout << "2- Display all Students\n";
+    cout << "3- Save students to file\n";
+    cout << "4- Add professor\n";
+    cout << "5- Display all professors\n";
+    cout << "6- Save professors to file\n";
+    cout << "7- Sign Up\n";
+    cout << "8-Exit\n";
     cout << "\n-------Enter your choice: -------\n";
 
-    cin >> choice; 
-    clearInput();  
+    cin >> choice;
+    clearInput();
 
     if (cin.fail())
     {
       clearInput();
       cout << "Invalid choice! Enter again!\n";
-      continue; 
+      continue;
     }
 
     switch (choice)
@@ -343,7 +365,7 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       break;
 
     case 5:
-      displayProfessors(profs); 
+      displayProfessors(profs);
       break;
 
     case 6:
@@ -351,12 +373,13 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       break;
 
     case 7:
-      User::registerUser(); waitEnter();
+      User::registerUser();
+      waitEnter();
       break;
 
     case 8:
       cout << "Logging out...\n";
-      break; 
+      break;
 
     default:
       cout << "Invalid choice! Try again!\n";
@@ -365,136 +388,162 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   } while (choice != 8);
 }
 
-void StudentMenu(int ID, vector<Student>&students){ // IMPORTANT: The 'students' parameter must be a non-const reference
+void StudentMenu(int ID, vector<Student> &students)
+{ // IMPORTANT: The 'students' parameter must be a non-const reference
   int studentChoice;
-  Student* currentStudent = nullptr; //this need to be clarified
+  Student *currentStudent = nullptr; // this need to be clarified
 
-  do{cout<<"\nWelcome Student: "<<ID<<endl;
-  cout<<"\n=========Student Menu=========\n";
-  cout<<"1-View personal information\n2-View Grades\n3-Log out\n";
-  cout<<"Enter your choice: \n";
-  cin>>studentChoice;
-  clearInput();
-  bool found=false;
-  if(studentChoice==1){
-    for(const auto& s:students){
-     if(s.getID()==ID){
-       s.displayInfo();
-       found=true;
-       break; //why break inside if and not outside??
-     }
-     if(!found){std::cout<<"Student not found!\n";}
-     waitEnter();
-     }
-  }
-        for (auto& s : students) { // Use non-const reference to modify 's' if needed (e.g., load grades)
-            // Assuming Username is "First_Name Last_Name"
-            // If Username is just First_Name, adjust getFullName() or comparison
-            if (s.getID() == ID) {
-                currentStudent = &s;
-                found = true;
-                break;
-            }
+  do
+  {
+    cout << "\nWelcome Student: " << ID << endl;
+    cout << "\n=========Student Menu=========\n";
+    cout << "1-View personal information\n2-View Grades\n3-Log out\n";
+    cout << "Enter your choice: \n";
+    cin >> studentChoice;
+    clearInput();
+    bool found = false;
+    if (studentChoice == 1)
+    {
+      for (const auto &s : students)
+      {
+        if (s.getID() == ID)
+        {
+          s.displayInfo();
+          found = true;
+          break; // why break inside if and not outside??
         }
+        if (!found)
+        {
+          std::cout << "Student not found!\n";
+        }
+        waitEnter();
+      }
+    }
+    for (auto &s : students)
+    { // Use non-const reference to modify 's' if needed (e.g., load grades)
+      // Assuming Username is "First_Name Last_Name"
+      // If Username is just First_Name, adjust getFullName() or comparison
+      if (s.getID() == ID)
+      {
+        currentStudent = &s;
+        found = true;
+        break;
+      }
+    }
 
-        if (!found) {
-            cout << "Student not found in the system!\n";
-            waitEnter();
-            continue; // Go back to menu if student not found
-        }
+    if (!found)
+    {
+      cout << "Student not found in the system!\n";
+      waitEnter();
+      continue; // Go back to menu if student not found
+    }
 
-        switch (studentChoice) {
-            case 1:
-                currentStudent->displayInfo();
-                waitEnter();
-                break;
-            case 2:
-                currentStudent->loadGradesFromFile(); 
-                currentStudent->displayGrade();       
-                waitEnter();
-                break;
-            case 3:
-                cout << "Logging out...\n";
-                break;
-            default:
-                cout << "Invalid choice! Please try again.\n";
-                waitEnter();
-                break;
-        }
-    } while (studentChoice != 3);
+    switch (studentChoice)
+    {
+    case 1:
+      currentStudent->displayInfo();
+      waitEnter();
+      break;
+    case 2:
+      currentStudent->loadGradesFromFile();
+      currentStudent->displayGrade();
+      waitEnter();
+      break;
+    case 3:
+      cout << "Logging out...\n";
+      break;
+    default:
+      cout << "Invalid choice! Please try again.\n";
+      waitEnter();
+      break;
+    }
+  } while (studentChoice != 3);
 }
 
-void ProfessorMenu(int ProfID, const vector<Professor>&professors, vector<Student>&students){
+void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Student> &students)
+{
   int choice;
-  const Professor* currentProfessor=nullptr;
-  bool found=false;
-  for(const auto& prof:professors){
-    if(prof.getID()==ProfID){
-       currentProfessor=&prof; //need to be clarified tooo
-       found=true;
-       break;
+  const Professor *currentProfessor = nullptr;
+  bool found = false;
+  for (const auto &prof : professors)
+  {
+    if (prof.getID() == ProfID)
+    {
+      currentProfessor = &prof; // need to be clarified tooo
+      found = true;
+      break;
     }
   }
 
-  if(!found){
-    cout<<"Professor is not found!\n";
+  if (!found)
+  {
+    cout << "Professor is not found!\n";
     return;
   }
 
-  do{cout<<"\n===== Professor Menu =====\n";
-        cout<<"1. View Personal Info\n";
-        cout<<"2. Add Grade\n";
-        cout<<"3. Edit Grade\n";
-        cout<<"4. Delete Grade\n";
-        cout<<"5. Logout\n";
-        cout<<"Enter choice: ";
-        cin>>choice;
-        clearInput();
-        
-        switch(choice){   //NOTE: if we declare new variables inside a case we should add {} for all case
-          case 1:
-          currentProfessor->displayInfo();
-          break;
+  do
+  {
+    cout << "\n===== Professor Menu =====\n";
+    cout << "1. View Personal Info\n";
+    cout << "2. Add Grade\n";
+    cout << "3. Edit Grade\n";
+    cout << "4. Delete Grade\n";
+    cout << "5. Logout\n";
+    cout << "Enter choice: ";
+    cin >> choice;
+    clearInput();
 
-          case 2:{
-          Grades g;
-          g.addGrade();
-          waitEnter();
-          break;}
+    switch (choice)
+    { // NOTE: if we declare new variables inside a case we should add {} for all case
+    case 1:
+      currentProfessor->displayInfo();
+      break;
 
-          case 3:{
-          int ID;
-          string Subject;
-          cout<<"Enter Student ID: \n";
-          cin>>ID;
-          clearInput();
-          cout<<"Enter Grade: \n";
-          getline(cin, Subject);
-          Grades::editGrade(ID, Subject);
-          waitEnter();
-          break;}
+    case 2:
+    {
+      Grades g;
+      g.addGrade();
+      waitEnter();
+      break;
+    }
 
-          case 4:{
-          int ID;
-          string Subject;
-          cout<<"Enter Student ID: \n";
-          cin>>ID;
-          clearInput();
-          cout<<"Enter Grade: \n";
-          getline(cin, Subject);
-          Grades::deleteGrade(ID, Subject);
-          waitEnter();
-          break;}
+    case 3:
+    {
+      int ID;
+      string Subject;
+      cout << "Enter Student ID: \n";
+      cin >> ID;
+      clearInput();
+      cout << "Enter Grade: \n";
+      getline(cin, Subject);
+      Grades::editGrade(ID, Subject);
+      waitEnter();
+      break;
+    }
 
-          case 5:
-          cout<<"Logging out!\n";
-          break;
+    case 4:
+    {
+      int ID;
+      string Subject;
+      cout << "Enter Student ID: \n";
+      cin >> ID;
+      clearInput();
+      cout << "Enter Grade: \n";
+      getline(cin, Subject);
+      Grades::deleteGrade(ID, Subject);
+      waitEnter();
+      break;
+    }
 
-          default:
-          cout<<"Invalid choice!Try again\n";
-        }
+    case 5:
+      cout << "Logging out!\n";
+      break;
 
-      }while(choice!=5);
+    default:
+      cout << "Invalid choice!Try again\n";
+    }
+
+  } while (choice != 5);
 }
 
 int main()
@@ -504,8 +553,6 @@ int main()
 
   loadStudentsFromFile(students);
   loadAllProfessorsFromFile(profs);
-  // You might want to load professors from file too, similar to students
-  // loadProfessorsFromFile(profs);
 
   string password, role;
   int ProfID;
@@ -513,23 +560,25 @@ int main()
   cin >> ProfID;
   cout << "Password: ";
   cin >> password;
-  clearInput(); 
+  clearInput();
 
   if (!User::authenticate(ProfID, password, role))
   {
     cout << "Login failed. Exiting...\n";
-    waitEnter(); 
+    waitEnter();
     return 0;
   }
   cout << "Welcome " << role << "!\n";
-  for(auto&c:role) c=tolower(c);  //everything wil be in lowercase
+  for (auto &c : role)
+    c = tolower(c); // everything wil be in lowercase
   if (role == "admin")
     adminMenu(students, profs);
-  else if(role == "student") StudentMenu(ProfID, students);
-  else if(role == "professor") ProfessorMenu( ProfID, profs, students);
+  else if (role == "student")
+    StudentMenu(ProfID, students);
+  else if (role == "professor")
+    ProfessorMenu(ProfID, profs, students);
   else
     cout << "Unkown Role!...\n";
 
   return 0;
 }
-
