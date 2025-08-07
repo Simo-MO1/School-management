@@ -20,6 +20,7 @@ public:
     void displayGrades() const;
     void saveGradesToFile() const;
     static std::vector<Grades> loadGradesFromFile(int gID);
+    void loadGradesForStudent(int ID);
     static void editGrade(int ID, const std::string &Subject);
     static void deleteGrade(int ID, const std::string &Subject);
 };

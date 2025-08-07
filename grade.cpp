@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 
 Grades::Grades(const int &id, const std::string &subject, const std::vector<float> &scores) : ID(id), Subject(subject), Scores(scores) {}
 int Grades::getID() const { return ID; }
@@ -92,13 +93,20 @@ std::vector<Grades> Grades::loadGradesFromFile(int gID)
   std::string line;
   while (std::getline(file, line))
   {
+    if (line.empty()) continue;
     std::stringstream ss(line);
     std::string idstr, subjectstr, markstr;
-    std::getline(ss, idstr, ',');
-    std::getline(ss, subjectstr, ',');
 
-    if(!std::getline(ss,idstr,','))continue; // Handle empty line or missing ID (need to be clarified)
-    int curentID = std::stoi(idstr);
+    if (!std::getline(ss, idstr, ',')) continue;
+    if (!std::getline(ss, subjectstr, ',')) continue;
+
+    int currentID;
+        try {
+            currentID = std::stoi(idstr);
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: Invalid ID '" << idstr << "' in grades.txt. Skipping line.\n";
+            continue;
+        }
 
     std::vector<float> currentScores;  // Local vector for scores
     while (std::getline(ss, markstr, ',')) //why??
@@ -112,119 +120,102 @@ std::vector<Grades> Grades::loadGradesFromFile(int gID)
         std::cerr << "Error! invalid score found in line"<<line<<"Details: "<<e.what() << std::endl;
       }
     }
-    result.push_back(Grades(curentID, subjectstr, currentScores));
+    result.push_back(Grades(currentID, subjectstr, currentScores));
   }
 
   file.close();
   return result; // why??
 }
-
-void Grades::editGrade(int ID, const std::string& Subject){
-    std:: ifstream ginFile("grades.txt");
-    std:: vector<Grades>allGrades; //why this
-    std:: string line;
-
-    if(!ginFile.is_open()){
-      std::cerr<<"ERROR! Unable to open the file\n";
-      return;
+// This function overwrites the grades.txt file with a new set of grades.
+// It's a helper function for edit and delete operations.
+static void saveAllGrades(const std::vector<Grades>& allGrades) {
+    // Open with std::ios::trunc to clear the file before writing
+    std::ofstream outFile("grades.txt", std::ios::trunc);
+    if (!outFile.is_open()) {
+        std::cerr << "ERROR! Unable to open grades.txt for writing!\n";
+        return;
     }
-
-    while(std::getline(ginFile, line)){
-      std:: stringstream ss(line);
-      std:: string idStr, subtStr, markStr;
-
-      std::getline(ss, idStr, ',');
-      std::getline(ss, subtStr, ',');
-
-      int ID = stoi(idStr); //why we do this
-
-      std::vector<float>scores;
-
-      while(getline(ss, markStr, ',')){ //why this 
-        try{
-          scores.push_back(stof(markStr)); //whyyyy how could it modified it, while just adding extra instance
-        } catch(const std:: invalid_argument &e){std::cerr<<"Error! in line: "<<line<<e.what();}
-      }
-      allGrades.push_back(Grades(ID, Subject, scores)); //whyyyyyy no idea
-    }
-    ginFile.close();
-
-    bool found=false; //need to be clarified
-    for(Grades& g: allGrades){
-      if(g.getID()==ID && g.getSubject()==Subject){
-        found=true;
-        std::cout<<"Editing the grades for subject: '"<<Subject<<"'.\n";
-        std::cout<<"how many new grades?\n";
-        int count;
-        std::cin>>count;
-
-        std::vector<float>newScores; //why another vector
-        std::cout<<"Enter the new grade: \n";
-
-        for(int i=0;i<count;++i){
-          float score;
-          std::cin>>score;
-          newScores.push_back(score); //need to be clarifieeed
+    for (const auto& grade : allGrades) {
+        outFile << grade.getID() << "," << grade.getSubject();
+        for (float score : grade.getScores()) {
+            outFile << "," << score;
         }
-        g=Grades(ID, Subject, newScores); //this one too
-        break;
-      }
+        outFile << "\n";
     }
-    if(!found){
-      std::cout<<"No grade found for the entered ID: "<<ID<<"and subject: "<<Subject<<std::endl;
-    }
-
-    std::ofstream goutFile("grades.txt");
-    for(const Grades& g: allGrades){     //this one too need to be clarified
-      goutFile<<g.getID()<<","<<g.getSubject();
-      for(float score: g.getScores())
-        goutFile<<","<<score;
-      goutFile.close();
-    }
-
-    std::cout<<"Grades updated successfully!\n";
+    outFile.close();
 }
 
-void Grades::deleteGrade(int studentID, const std::string& Subject){
-  std:: ifstream ginFile("grades.txt");
-    std:: vector<Grades>allGrades; 
-    std:: string line;
 
-    if(!ginFile.is_open()){
-      std::cerr<<"ERROR! Unable to open the file\n";
-      return;
+void Grades::loadGradesForStudent(int studentID) {
+    this->ID = studentID; // Set the ID for the current object
+    this->Scores.clear(); // Clear any previous scores
+    this->Subject = "";   // Reset subject
+
+    std::vector<Grades> allGrades = loadGradesFromFile(studentID);
+    for (const auto& grade : allGrades) {
+        if (grade.getID() == studentID) {
+            // Found the grades for our student, copy them over
+            this->Subject = grade.getSubject();
+            this->Scores = grade.getScores();
+            return;
+        }
     }
-
-while(std::getline(ginFile, line)){
-      std:: stringstream ss(line);
-      std:: string idStr, subtStr, markStr;
-
-      std::getline(ss, idStr, ',');
-      std::getline(ss, subtStr, ',');
-
-      int ID = stoi(idStr); //why we do this
-
-      std::vector<float>scores; //why another vector
-
-      while(getline(ss, markStr, ',')){ //why this 
-        try{
-          scores.push_back(stof(markStr)); //whyyyy how could it modified it, while just adding extra instance
-        } catch(const std:: invalid_argument &e){std::cerr<<"Error! in line: "<<line<<e.what();}
-      }
-    
-      if(!(ID==studentID && subtStr==Subject)){
-        allGrades.push_back(Grades(ID, Subject, scores)); //only grades that aren't entered will not be delete it or what?
-      }
 }
-ginFile.close();
 
-std::ofstream goutFile("grades.txt");
- for(const Grades& g: allGrades){     //this one too need to be clarified
-      goutFile<<g.getID()<<","<<g.getSubject();
-      for(float score: g.getScores())
-        goutFile<<","<<score;
-      goutFile.close();
+void Grades::editGrade(int studentID, const std::string& subjectToEdit) {
+    // find the one line to change, modify it in memory, and then write the entire updated list back to the file.
+    std::vector<Grades> allGrades = loadGradesFromFile(studentID);
+    bool found = false;
+
+    for (Grades& g : allGrades) {
+        if (g.getID() == studentID && g.getSubject() == subjectToEdit) {
+            found = true;
+            std::cout << "Editing grades for student " << studentID << " in '" << subjectToEdit << "'.\n";
+            std::cout << "How many new grades do you want to enter?\n";
+            int count;
+            std::cin >> count;
+
+            //  `newScores` is a temporary vector to hold the new grades
+            std::vector<float> newScores;
+            std::cout << "Enter the new grades:\n";
+            for (int i = 0; i < count; ++i) {
+                float score;
+                std::cin >> score;
+                newScores.push_back(score);
+            }
+            // This line replaces the old grade object in the `allGrades` vector with a new one containing the updated scores.
+            g = Grades(studentID, subjectToEdit, newScores);
+            break; // Exit loop once found and edited
+        }
     }
 
- std::cout<<"Grades deleted successfully1\n";
+    if (!found) {
+        std::cout << "No grade entry found for ID: " << studentID << " and subject: " << subjectToEdit << std::endl;
+    } else {
+        // This loop writes the entire, now-modified, `allGrades` vector back to the file, overwriting the old content.
+        saveAllGrades(allGrades);
+        std::cout << "Grades updated successfully!\n";
+    }
+}
+void Grades::deleteGrade(int studentID, const std::string& subjectToDelete) {
+    std::vector<Grades> allGrades = loadGradesFromFile(studentID);
+    std::vector<Grades> modifiedGrades;
+    bool found = false;
+
+    for (const auto& g : allGrades) {
+        // This `if` statement checks if the current grade is NOT the one we want to delete.
+        // If it's not the one to delete, we add it to our new `remainingGrades` vector.
+        if (!(g.getID() == studentID && g.getSubject() == subjectToDelete)) {
+            modifiedGrades.push_back(g);
+        } else {
+            found = true; // We found the record to delete (and skip adding it)
+        }
+    }
+
+    if (!found) {
+        std::cout << "No grade entry found for ID: " << studentID << " and subject: " << subjectToDelete << " to delete.\n";
+    } else {
+        saveAllGrades(modifiedGrades);
+        std::cout << "Grades deleted successfully!\n";
+    }
 }
