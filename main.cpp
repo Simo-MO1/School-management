@@ -75,32 +75,26 @@ void addStudent(vector<Student> &students)
 
 void displayStudents(const vector<Student> &students)
 {
-  ifstream inFile("students.txt");
-  if (!inFile)
-  {
-    cerr << "Unable to open the file\n";
-  }
-  Student s;
-  bool found = false;
-  cout << "\nAll students: \n";
-  while (inFile >> s)
-  {
-    cout << "\n---------------------------\n";
-    s.displayInfo();
-    cout << "\n---------------------------\n";
-    found = true;
-  }
-
-  if (!found)
-  {
-    cout << "No student in the system\n";
-  }
-  waitEnter();
+  if (students.empty())
+    {
+        cout << "No students in the system.\n";
+    }
+    else
+    {
+        cout << "\n--- All Students ---\n";
+        for (const auto &s : students)
+        {
+            cout << "---------------------------\n";
+            s.displayInfo();
+            cout << "---------------------------\n";
+        }
+    }
+    waitEnter();
 }
 
 void saveAllToFile(const vector<Student> &students)
 {
-  ofstream outFile("students.txt", ios::app);
+  ofstream outFile("students.txt", ios::trunc);
   if (!outFile.is_open())
   {
     cerr << "ERROR! Unable to open students.txt for writing!\n";
@@ -128,12 +122,11 @@ void loadStudentsFromFile(vector<Student> &students)
     return;
   }
 
-  students.clear();
   string line;
-  while (getline(file, line))
+  while (getline(file, line)){
     if (line.empty())
       continue;
-  {
+  
     stringstream ss(line);
     string idstr, agestr, fname, lname, birthp, birthd, gender, natio, gra;
     float grade = -1.0f; // i forgot what's this
@@ -153,7 +146,6 @@ void loadStudentsFromFile(vector<Student> &students)
         try
         {
           grade = stof(gra);
-          cout << "Reading line: " << line << endl;
         }
         catch (const std::invalid_argument &e)
         {
@@ -352,7 +344,6 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
       break;
 
     case 2:
-      loadStudentsFromFile(students);
       displayStudents(students);
       break;
 
