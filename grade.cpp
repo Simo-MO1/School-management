@@ -42,7 +42,7 @@ void Grades::saveGradesToFile() const
   std::ofstream out("grades.txt", std::ios::app);
   if (out.is_open())
   {
-    out << ID << ", " << Subject;
+    out << ID << "," << Subject;
     for (float score : Scores)
     {
       out << "," << score;
@@ -64,7 +64,7 @@ void Grades::displayGrades() const
     return;
   }
   std::cout << "\n--- Grades Details ---\n";
-  std::cout << std::left << std::setw(15) << "Student ID:" << ID << "\n";
+  std::cout << std::left << std::setw(15) << "Student ID:" << ID << "\n"; //i need to do some one or two exercices to understand it better
   std::cout << std::left << std::setw(15) << "Subject:" << Subject << "\n";
   std::cout << std::left << std::setw(15) << "Scores:";
 

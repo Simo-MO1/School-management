@@ -436,7 +436,6 @@ void StudentMenu(int ID, vector<Student> &students)
       waitEnter();
       break;
     case 2:
-      currentStudent->loadGradesFromFile();
       currentStudent->displayGrade();
       waitEnter();
       break;

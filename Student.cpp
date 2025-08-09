@@ -33,7 +33,7 @@ void Student::saveToFile() const
   ofstream out("students.txt", ios::app);
   if (out.is_open())
   {
-    out << ID << "," << Age << "," << First_Name << "," << Last_Name << "," << Birth_Place << "," << Birth_Date << "," << Sex << "," << Nationality << endl;
+    out << ID << "," << Age << "," << First_Name << "," << Last_Name << "," << Birth_Place << "," << Birth_Date << "," << Sex << "," << Nationality << "," << Grade<<endl;
     out.close();
   }
   else
@@ -43,8 +43,7 @@ void Student::saveToFile() const
 }
 
 void Student::displayGrade() const{
-  Grades g;
-  g.displayGrades();
+  cout << "Grade: " << Grade << endl;
 }
 
 void Student::loadGradesFromFile(){
