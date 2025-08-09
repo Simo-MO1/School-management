@@ -29,7 +29,6 @@ void addStudent(vector<Student> &students)
 {
   int ID, Age;
   string First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality;
-  float Grade;
 
   cout << "enter student's ID: \n";
   while (!(cin >> ID))
@@ -66,7 +65,7 @@ void addStudent(vector<Student> &students)
   getline(cin, Nationality);
 
   // Corrected constructor call based on student.h order:
-  Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality, Grade);
+  Student s(ID, Age, First_Name, Last_Name, Sex, Birth_Place, Birth_Date, Nationality);
   students.push_back(s);
   cout << " Student added!!\n";
 
@@ -155,7 +154,7 @@ void loadStudentsFromFile(vector<Student> &students)
 
       try
       {
-        Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio, grade);
+        Student s(stoi(idstr), stoi(agestr), fname, lname, gender, birthp, birthd, natio);
         students.push_back(s);
       }
       catch (const std::invalid_argument &e)

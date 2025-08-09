@@ -107,7 +107,7 @@ std::vector<Grades> Grades::loadGradesFromFile(int gID)
             std::cerr << "Error: Invalid ID '" << idstr << "' in grades.txt. Skipping line.\n";
             continue;
         }
-
+    if (currentID != gID) continue;
     std::vector<float> currentScores;  // Local vector for scores
     while (std::getline(ss, markstr, ',')) //why??
     {
