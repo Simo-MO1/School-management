@@ -6,6 +6,7 @@
 #include "professor.h"
 #include "user.h"
 #include <sstream>
+#include "ConsoleUtils.h"
 
 // It's generally better to avoid 'using namespace std;' in headers,
 // but for .cpp files, it's common.
@@ -315,7 +316,10 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
   int choice;
   do
   {
-    cout << "\n_________Menu___________\n";
+    clearScreen();
+    setColor(12); // Light red
+    typeWriter("===== ADMIN MENU =====\n", 10);
+    resetColor();
     cout << "1- Add student\n";
     cout << "2- Display all Students\n";
     cout << "3- Save students to file\n";
@@ -324,8 +328,9 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
     cout << "6- Save professors to file\n";
     cout << "7- Sign Up\n";
     cout << "8-Exit\n";
+    setColor(14);
     cout << "\n-------Enter your choice: -------\n";
-
+    resetColor();
     cin >> choice;
     clearInput();
 
@@ -385,10 +390,14 @@ void StudentMenu(int ID, vector<Student> &students)
 
   do
   {
-    cout << "\nWelcome Student: " << ID << endl;
-    cout << "\n=========Student Menu=========\n";
+    clearScreen();
+    setColor(10); // Light green
+    typeWriter("===== STUDENT MENU =====\n", 10);
+    resetColor();
     cout << "1-View personal information\n2-View Grades\n3-Log out\n";
+    setColor(14); // Yellow prompt
     cout << "Enter your choice: \n";
+    resetColor();
     cin >> studentChoice;
     clearInput();
     bool found = false;
@@ -472,13 +481,18 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
 
   do
   {
-    cout << "\n===== Professor Menu =====\n";
+    clearScreen();
+    setColor(13); // Light purple
+    typeWriter("===== PROFESSOR MENU =====\n", 10);
+    resetColor();
     cout << "1. View Personal Info\n";
     cout << "2. Add Grade\n";
     cout << "3. Edit Grade\n";
     cout << "4. Delete Grade\n";
     cout << "5. Logout\n";
+    setColor(14);
     cout << "Enter choice: ";
+    resetColor();
     cin >> choice;
     clearInput();
 
@@ -539,6 +553,19 @@ int main()
 {
   vector<Student> students;
   vector<Professor> profs;
+
+  clearScreen();
+    setColor(11); // Light Aqua
+    typeWriter("===== WELCOME TO SCHOOL MANAGEMENT SYSTEM =====\n", 15);
+    resetColor();
+    loadingAnimation("Initializing system", 5, 200);
+
+    // Show developer info or something extra
+    setColor(14); // Yellow
+    typeWriter("Developed by Your Name\n", 20);
+    resetColor();
+
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 
   loadStudentsFromFile(students);
   loadAllProfessorsFromFile(profs);
