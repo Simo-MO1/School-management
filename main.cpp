@@ -320,14 +320,7 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
     setColor(12); // Light red
     typeWriter("===== ADMIN MENU =====\n", 10);
     resetColor();
-    cout << "1- Add student\n";
-    cout << "2- Display all Students\n";
-    cout << "3- Save students to file\n";
-    cout << "4- Add professor\n";
-    cout << "5- Display all professors\n";
-    cout << "6- Save professors to file\n";
-    cout << "7- Sign Up\n";
-    cout << "8-Exit\n";
+typeWriter("1- Add student\n2- Display all Students\n3- Save students to file\n4- Add professor\n5- Display all professors\n6- Save professors to file\n7- Sign Up\n8-Exit\n",15);
     setColor(14);
     cout << "\n-------Enter your choice: -------\n";
     resetColor();
@@ -394,7 +387,7 @@ void StudentMenu(int ID, vector<Student> &students)
     setColor(10); // Light green
     typeWriter("===== STUDENT MENU =====\n", 10);
     resetColor();
-    cout << "1-View personal information\n2-View Grades\n3-Log out\n";
+    typeWriter("1-View personal information\n2-View Grades\n3-Log out\n",15);
     setColor(14); // Yellow prompt
     cout << "Enter your choice: \n";
     resetColor();
@@ -485,11 +478,7 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
     setColor(13); // Light purple
     typeWriter("===== PROFESSOR MENU =====\n", 10);
     resetColor();
-    cout << "1. View Personal Info\n";
-    cout << "2. Add Grade\n";
-    cout << "3. Edit Grade\n";
-    cout << "4. Delete Grade\n";
-    cout << "5. Logout\n";
+    typeWriter("1. View Personal Info\n2. Add Grade\n3. Edit Grade\n4. Delete Grade\n5. Logout\n",15);
     setColor(14);
     cout << "Enter choice: ";
     resetColor();
@@ -559,11 +548,6 @@ int main()
     typeWriter("===== WELCOME TO SCHOOL MANAGEMENT SYSTEM =====\n", 15);
     resetColor();
     loadingAnimation("Initializing system", 5, 200);
-
-    // Show developer info or something extra
-    setColor(14); // Yellow
-    typeWriter("Developed by Your Name\n", 20);
-    resetColor();
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
