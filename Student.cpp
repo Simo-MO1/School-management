@@ -14,7 +14,7 @@ Student::Student(int id, int age, string first, string last, string sex, string 
 
 void Student::displayInfo() const
 {
-  cout << "ID: " << ID << "\nAge: " << Age << "\nName: " << First_Name << " " << Last_Name << "\nBirth Information: " << Birth_Date << " in " << Birth_Place << "\nSex: " << Sex << "\nNationality: " << Nationality << endl; // Added space and endl
+  cout << "ID: " << ID << "\nAge: " << Age << "\nName: " << First_Name << " " << Last_Name << "\nBirth Information: " << Birth_Date << " in " << Birth_Place << "\nSex: " << Sex << "\nNationality: " << Nationality << endl; 
 }
 
 int Student::getID() const

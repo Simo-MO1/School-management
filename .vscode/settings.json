@@ -52,7 +52,13 @@
         "text_encoding": "cpp",
         "typeinfo": "cpp",
         "variant": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "chrono": "cpp",
+        "cstdarg": "cpp",
+        "ratio": "cpp",
+        "semaphore": "cpp",
+        "stop_token": "cpp",
+        "thread": "cpp"
     },
     "C_Cpp.default.compilerPath": "C:/msys64/mingw64/bin/gcc.exe",
     "CodeGPT.apiKey": "Anthropic"
