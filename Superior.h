@@ -19,5 +19,6 @@ class Superior{
     std::string getPhNumber() const;
     void displayInfo() const;
     void saveToFile() const;
+    void contactProfessors();
 };
 #endif

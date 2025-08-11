@@ -38,3 +38,13 @@ void Superior::saveToFile() const{
     cerr << "Unable to open students.txt for writing!!\n";
   }
 }
+
+void Superior::contactProfessors() {
+    ifstream file("professors.txt");
+    string firstName, lastName, email;
+
+    cout << "Professors List:\n";
+    while (file >> firstName >> lastName >> email) {
+        cout << firstName << " " << lastName << " - " << email << "\n";
+    }
+}

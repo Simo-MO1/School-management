@@ -24,6 +24,5 @@ public:
   void displayGrade() const;
   friend std:: istream& operator >>(std::istream& in, Student& s); // neet to be clarified (what does istream mean and do?)
   void addGrade(const std::string& subject, float grade);
-  void displayGradesTable() const;
 };
 #endif

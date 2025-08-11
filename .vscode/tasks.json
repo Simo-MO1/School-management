@@ -24,6 +24,7 @@
                 "professor.cpp",
                 "user.cpp",
                 "grade.cpp",
+                "Superior.cpp",
                 "-o",
                 "main.exe"
             ],

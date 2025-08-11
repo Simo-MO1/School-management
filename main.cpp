@@ -176,7 +176,7 @@ void addProfessor(vector<Professor> &profs)
 {
   int ID, Age;
   float Salary;
-  string First_Name, Last_Name, Speciality;
+  string First_Name, Last_Name, Speciality, Email;
 
   cout << "Enter Professor ID: ";
   while (!(cin >> ID))
@@ -210,8 +210,11 @@ void addProfessor(vector<Professor> &profs)
     clearInput();
   }
   clearInput();
+  cout << "Email: ";
+  getline(cin, Email);
+  clearInput();
 
-  profs.emplace_back(ID, Age, First_Name, Last_Name, Speciality, Salary);
+  profs.emplace_back(ID, Age, First_Name, Last_Name, Speciality, Salary, Email);
   cout << " Professor added.\n";
   waitEnter();
 }
@@ -268,7 +271,7 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
   while (getline(PoutFile, line))
   {
     stringstream ss(line);
-    string strID, strAge, fname, lname, spec, sal;
+    string strID, strAge, fname, lname, spec, sal, email;
     float sala = -1.0f;
 
     if (getline(ss, strID, ',') &&
@@ -276,7 +279,8 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
         getline(ss, fname, ',') &&
         getline(ss, lname, ',') &&
         getline(ss, spec, ',') &&
-        getline(ss, sal, ','))
+        getline(ss, sal, ',')&&
+        getline(ss, email, ','))
     {
       if (ss, sal, ',')
       {
@@ -295,7 +299,7 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
     }
     try
     {
-      Professor p(stoi(strID), stoi(strAge), fname, lname, spec, stof(sal));
+      Professor p(stoi(strID), stoi(strAge), fname, lname, spec, stof(sal), email);
       professors.push_back(p);
     }
     catch (const std::invalid_argument &e)
@@ -537,6 +541,50 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
 
   } while (choice != 5);
 }
+
+void SuperiorMenu(vector<Student> &students) {
+    clearScreen();
+    setColor(10); // green
+    typeWriter("===== PARENTS MENU =====\n", 15);
+    resetColor();
+
+    typeWriter("1. View child's grades\n2. Contact professors\n", 15);
+
+    int choice;
+    cin >> choice;
+
+    switch (choice) {
+        case 1: {
+            int childID;
+            cout << "Enter child's ID: ";
+            cin >> childID;
+
+            bool found = false;
+            for (auto &st : students) {
+                if (st.getID() == childID) {  // You need a getID() function in Student class
+                    st.displayGrade();
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                cout << "Student not found!\n";
+            }
+            waitEnter();
+            break;
+        }
+        case 2:
+            cout << "Contacting professors...\n";
+            
+            waitEnter();
+            break;
+        default:
+            cout << "Invalid choice.\n";
+            waitEnter();
+            break;
+}
+}
+
 
 int main()
 {
