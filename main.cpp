@@ -7,6 +7,7 @@
 #include "user.h"
 #include <sstream>
 #include "ConsoleUtils.h"
+#include "Superior.h"
 
 // It's generally better to avoid 'using namespace std;' in headers,
 // but for .cpp files, it's common.
@@ -315,7 +316,120 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
   cout << "Professors loaded from file!\n";
 }
 
-void adminMenu(vector<Student> &students, vector<Professor> &profs)
+void addSuperior(vector<Superior> &sup)
+{
+  string Fi_Name, La_Name, Email, Phone_Number;
+    int ID;
+
+  cout << "Enter Superior ID: ";
+  while (!(cin >> ID))
+  {
+    cout << "Invalid Input! Enter again!! \n";
+    clearInput();
+  }
+  clearInput();
+
+  cout << "First Name: ";
+  getline(cin, Fi_Name);
+
+  cout << "Last Name: ";
+  getline(cin, La_Name);
+
+  cout << "Email: ";
+  while (!(cin >> Email))
+  {
+    cout << "Invalid Input! Enter again!!\n";
+    clearInput();
+  }
+  clearInput();
+  cout << "Phone number: ";
+  getline(cin, Phone_Number);
+  clearInput();
+
+  sup.emplace_back(ID, Fi_Name, La_Name, Email, Phone_Number);
+  cout << " Superior added.\n";
+  waitEnter();
+}
+
+void displaySuperior(vector<Superior> &sup)
+{
+  if (sup.empty())
+  {
+    cout << "No Superior available\n";
+    waitEnter();
+    return;
+  }
+  cout << "\nAll Professors\n";
+  for (const auto &sups : sup)
+  {
+    cout << "\n-----------------------\n";
+    sups.displayInfo();
+    cout << "\n-----------------------\n";
+  }
+  waitEnter();
+}
+
+void saveAllSuperiorsToFile(vector<Superior> &sup)
+{
+  ofstream outFile("superior.txt"); // This will truncate (clear) the file
+  if (!outFile.is_open())
+  {
+    cerr << "ERROR! Unable to open superior.txt for writing!\n";
+    waitEnter();
+    return;
+  }
+
+  for (const auto &sups : sup)
+  {
+    sups.saveToFile();
+  }
+  outFile.close();
+  cout << "Superiors saved.\n";
+  waitEnter();
+}
+
+void loadAllSuperiorsFromFile(vector<Superior> &sup)
+{
+  ifstream PoutFile("superior.txt");
+  if (!PoutFile.is_open())
+  {
+    cerr << "File is not found or couldn't be opened! Starting with no professors\n";
+    waitEnter();
+    return;
+  }
+
+  string line;
+
+  while (getline(PoutFile, line))
+  {
+    stringstream ss(line);
+    string strID, fname, lname, email, pnum;
+    float sala = -1.0f;
+
+    if (getline(ss, strID, ',') &&
+        getline(ss, fname, ',') &&
+        getline(ss, lname, ',') &&
+        getline(ss, email, ',')&&
+        getline(ss, pnum, ','))
+    try
+    {
+      Superior s(stoi(strID), fname, lname, email, pnum);
+      sup.push_back(s);
+    }
+    catch (const std::invalid_argument &e)
+    {
+      cerr << "Error converting string to int during professor load: " << e.what() << "in line" << line << endl;
+    }
+    catch (const std::out_of_range &e)
+    {
+      cerr << "Value out of range during student load: " << e.what() << "in line" << line << endl;
+    }
+  }
+  PoutFile.close();
+  cout << "Superior loaded from file!\n";
+}
+
+void adminMenu(vector<Student> &students, vector<Professor> &profs, vector<Superior>&sup)
 {
   int choice;
   do
@@ -324,7 +438,7 @@ void adminMenu(vector<Student> &students, vector<Professor> &profs)
     setColor(12); // Light red
     typeWriter("===== ADMIN MENU =====\n", 10);
     resetColor();
-typeWriter("1- Add student\n2- Display all Students\n3- Save students to file\n4- Add professor\n5- Display all professors\n6- Save professors to file\n7- Sign Up\n8-Exit\n",15);
+typeWriter("1- Add student\n2- Display all Students\n3- Save students to file\n4- Add professor\n5- Display all professors\n6- Save professors to file\n7- Add Superior\n8- Display all Superiors\n9- Save Superiors to file\n10- Sign Up\n11-Exit\n",11);
     setColor(14);
     cout << "\n-------Enter your choice: -------\n";
     resetColor();
@@ -364,12 +478,24 @@ typeWriter("1- Add student\n2- Display all Students\n3- Save students to file\n4
       saveAllProfessorsToFile(profs);
       break;
 
-    case 7:
+      case 7:
+      addSuperior(sup);
+      break;
+
+    case 8:
+      displaySuperior(sup);
+      break;
+
+    case 9:
+      saveAllSuperiorsToFile(sup);
+      break;
+
+    case 10:
       User::registerUser();
       waitEnter();
       break;
 
-    case 8:
+    case 11:
       cout << "Logging out...\n";
       break;
 
@@ -377,7 +503,7 @@ typeWriter("1- Add student\n2- Display all Students\n3- Save students to file\n4
       cout << "Invalid choice! Try again!\n";
       waitEnter();
     }
-  } while (choice != 8);
+  } while (choice != 11);
 }
 
 void StudentMenu(int ID, vector<Student> &students)
@@ -542,7 +668,7 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
   } while (choice != 5);
 }
 
-void SuperiorMenu(vector<Student> &students) {
+void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students) {
     clearScreen();
     setColor(10); // green
     typeWriter("===== PARENTS MENU =====\n", 15);
@@ -575,7 +701,7 @@ void SuperiorMenu(vector<Student> &students) {
         }
         case 2:
             cout << "Contacting professors...\n";
-            
+           
             waitEnter();
             break;
         default:
@@ -590,6 +716,7 @@ int main()
 {
   vector<Student> students;
   vector<Professor> profs;
+  vector<Superior> sup;
 
   clearScreen();
     setColor(11); // Light Aqua
@@ -620,11 +747,13 @@ int main()
   for (auto &c : role)
     c = tolower(c); // everything wil be in lowercase
   if (role == "admin")
-    adminMenu(students, profs);
+    adminMenu(students, profs, sup);
   else if (role == "student")
     StudentMenu(ProfID, students);
   else if (role == "professor")
     ProfessorMenu(ProfID, profs, students);
+    else if (role == "superior")
+    SuperiorMenu(profs, students);
   else
     cout << "Unkown Role!...\n";
 

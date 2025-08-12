@@ -1,7 +1,4 @@
 01,1234,admin
-
-
-
-
 200,s01234,student
 1,t01234,professor
+001,p01234,superior

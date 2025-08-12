@@ -29,9 +29,9 @@ string Superior::getPhNumber()const{
 }
 
 void Superior::saveToFile() const{
-    ofstream outFile("parents.txt");
+    ofstream outFile("superior.txt");
     if(outFile.is_open()){
-        outFile << "ID: " << ID << "\nName: " << Fi_Name << " " << La_Name << "\nEmail: " << Email << " Phone number " << Phone_Number<<endl;
+        outFile << ID << "," << Fi_Name << La_Name << "," << Email <<","<< Phone_Number<<endl;
         outFile.close();
     }else
   {

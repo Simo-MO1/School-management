@@ -53,7 +53,7 @@ void User:: registerUser(){
    string ID, Password, Role;
    cout<<"enter your ID: "; cin>>ID;
    cout<<"enter your password: "; cin>>Password;
-   cout<<"enter your role('admin', 'student', 'professor')"; cin>>Role;
+   cout<<"enter your role('admin', 'student', 'professor', 'superior') '!!in lowercase!!"; cin>>Role;
 
    ofstream outFile("users.txt",ios::app);
     if(outFile.is_open()){
@@ -81,6 +81,17 @@ void User:: registerUser(){
       if(sFile.is_open()){
         sFile<<ID<<","<<Password<<endl;
         sFile.close();
+        cout<<"Data saved successefully!"<<endl;
+      } else{
+        cerr<<"could not open the file!";
+      }
+    }
+
+    if(Role=="superior"){
+      ofstream SFile("superior.txt",ios::app);
+      if(SFile.is_open()){
+        SFile<<ID<<","<<Password<<endl;
+        SFile.close();
         cout<<"Data saved successefully!"<<endl;
       } else{
         cerr<<"could not open the file!";
