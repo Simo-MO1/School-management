@@ -10,7 +10,7 @@ Professor::Professor(int id, int age, string first, string last, string spec, fl
 
 void Professor::displayInfo() const
 {
-  cout << "ID: " << ID << "\nAge: " << Age << "\nName: " << First_Name << " " << Last_Name << "\nSpecialty: " << Speciality << "\nSalary: " << Salary <<  "\nSalary: "<< Salary<< endl; 
+  cout << "ID: " << ID << "\nAge: " << Age << "\nName: " << First_Name << " " << Last_Name << "\nSpecialty: " << Speciality << "\nSalary: " << Salary <<  "\nEmail: "<< Email<< endl; 
 }
 
 int Professor::getID() const

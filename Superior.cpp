@@ -10,7 +10,7 @@ Superior::Superior() {};
 Superior::Superior(int id, string fname, string lname,string email, string Pnumber): ID(id),  Fi_Name(fname),  La_Name(lname), Email(email), Phone_Number(Pnumber) {}
 
 void Superior::displayInfo()const{
-  cout << "ID: " << ID << "\nName: " << Fi_Name << " " << La_Name << "\nEmail: " << Email << " Phone number " << Phone_Number<<endl;
+  cout << "ID: " << ID << "\nName: " << Fi_Name << " " << La_Name << "\nEmail: " << Email << "\nPhone number " << Phone_Number<<endl;
 }
 
 int Superior::getID() const{
@@ -29,9 +29,9 @@ string Superior::getPhNumber()const{
 }
 
 void Superior::saveToFile() const{
-    ofstream outFile("superior.txt");
+    ofstream outFile("superior.txt", ios::app);
     if(outFile.is_open()){
-        outFile << ID << "," << Fi_Name << La_Name << "," << Email <<","<< Phone_Number<<endl;
+        outFile << ID << "," << Fi_Name <<","<< La_Name << "," << Email <<","<< Phone_Number<<endl;
         outFile.close();
     }else
   {

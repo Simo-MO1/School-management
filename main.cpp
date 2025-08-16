@@ -240,7 +240,7 @@ void displayProfessors(vector<Professor> &profs)
 
 void saveAllProfessorsToFile(vector<Professor> &profs)
 {
-  ofstream outFile("professor.txt"); // This will truncate (clear) the file
+  ofstream outFile("professor.txt"); 
   if (!outFile.is_open())
   {
     cerr << "ERROR! Unable to open professor.txt for writing!\n";
@@ -283,21 +283,6 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
         getline(ss, sal, ',')&&
         getline(ss, email, ','))
     {
-      if (ss, sal, ',')
-      {
-        if (!sal.empty())
-        {
-          try
-          {
-            sala = stof(sal);
-          }
-          catch (const std::invalid_argument &e)
-          {
-            cerr << "Error!" << e.what() << endl;
-          }
-        }
-      }
-    }
     try
     {
       Professor p(stoi(strID), stoi(strAge), fname, lname, spec, stof(sal), email);
@@ -315,7 +300,7 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
   PoutFile.close();
   cout << "Professors loaded from file!\n";
 }
-
+}
 void addSuperior(vector<Superior> &sup)
 {
   string Fi_Name, La_Name, Email, Phone_Number;
@@ -668,7 +653,7 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
   } while (choice != 5);
 }
 
-void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students) {
+void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students) { 
     clearScreen();
     setColor(10); // green
     typeWriter("===== PARENTS MENU =====\n", 15);
@@ -677,17 +662,29 @@ void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students
     typeWriter("1. View child's grades\n2. Contact professors\n", 15);
 
     int choice;
-    cin >> choice;
+    if (!(cin >> choice)) { // prevent crash on invalid input
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid input. Please enter a number.\n";
+        waitEnter();
+        return;
+    }
 
     switch (choice) {
         case 1: {
             int childID;
             cout << "Enter child's ID: ";
-            cin >> childID;
+            if (!(cin >> childID)) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid ID!\n";
+                waitEnter();
+                break;
+            }
 
             bool found = false;
             for (auto &st : students) {
-                if (st.getID() == childID) {  // You need a getID() function in Student class
+                if (st.getID() == childID) {
                     st.displayGrade();
                     found = true;
                     break;
@@ -701,15 +698,18 @@ void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students
         }
         case 2:
             cout << "Contacting professors...\n";
-           
+            for (const auto &prof : professors) {
+                cout << "- " << prof.getFullName() << " (" << prof.getEmail() << ")\n";
+            }
             waitEnter();
             break;
         default:
             cout << "Invalid choice.\n";
             waitEnter();
             break;
+    }
 }
-}
+
 
 
 int main()
