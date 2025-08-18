@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <sstream>
+#include <limits>
 
 using namespace std; // OK to use in .cpp file
 
@@ -24,7 +25,7 @@ int Student::getID() const
 
 string Student::getFullName() const
 {
-  return First_Name + "," + Last_Name;
+  return First_Name + " " + Last_Name;
 }
 
 void Student::addGrade(const std::string& subject, float grade) {
@@ -82,10 +83,28 @@ std::istream& operator>>(std::istream& in, Student& s){  //this is confusing
    in>>s.ID;
    in>>s.Age;
    std::getline(in, s.First_Name);
+   cin.clear();
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
    std::getline(in, s.Last_Name);
+   cin.clear();
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
    std::getline(in, s.Birth_Place);
+   cin.clear();
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
    std::getline(in, s.Birth_Date);
+   cin.clear();
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+   
    std::getline(in, s.Sex);
+   cin.clear();
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+   
    std::getline(in, s.Nationality);
+   cin.clear();
+   cin.ignore(numeric_limits<streamsize>::max(), '\n');
+   
    return in;
 }

@@ -16,7 +16,7 @@ void Grades::addGrade()
   std::cout << "\n Enter student's ID:\n";
   std::cin >> ID;
 
-  std::cout << "\Enter the subject:\n";
+  std::cout << "Enter the subject:\n";
   std::cin.ignore();
   std::getline(std::cin, Subject);
 

@@ -2,7 +2,7 @@
 #include <limits>
 #include <vector>
 #include <fstream>
-#include "student.h"
+#include "Student.h"
 #include "professor.h"
 #include "user.h"
 #include <sstream>
@@ -297,9 +297,9 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
       cerr << "Value out of range during student load: " << e.what() << "in line" << line << endl;
     }
   }
-  PoutFile.close();
   cout << "Professors loaded from file!\n";
 }
+  PoutFile.close();
 }
 void addSuperior(vector<Superior> &sup)
 {
@@ -519,12 +519,12 @@ void StudentMenu(int ID, vector<Student> &students)
           found = true;
           break; // why break inside if and not outside??
         }
-        if (!found)
+        waitEnter();
+      }
+      if (!found)
         {
           std::cout << "Student not found!\n";
         }
-        waitEnter();
-      }
     }
     for (auto &s : students)
     { // Use non-const reference to modify 's' if needed (e.g., load grades)
@@ -656,7 +656,7 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
 void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students) { 
     clearScreen();
     setColor(10); // green
-    typeWriter("===== PARENTS MENU =====\n", 15);
+    typeWriter("===== SuperiorMenu =====\n", 15);
     resetColor();
 
     typeWriter("1. View child's grades\n2. Contact professors\n", 15);
@@ -709,7 +709,6 @@ void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students
             break;
     }
 }
-
 
 
 int main()

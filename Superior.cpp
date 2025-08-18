@@ -17,7 +17,7 @@ int Superior::getID() const{
     return ID;
 }
 string Superior::getFullName()const{
-    return Fi_Name + La_Name;
+    return Fi_Name + " " +La_Name;
 }
 
 string Superior::getEmail() const{
@@ -40,7 +40,7 @@ void Superior::saveToFile() const{
 }
 
 void Superior::contactProfessors() {
-    ifstream file("professors.txt");
+    ifstream file("professor.txt");
     string firstName, lastName, email;
 
     cout << "Professors List:\n";
