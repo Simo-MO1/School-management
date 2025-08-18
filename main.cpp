@@ -19,12 +19,15 @@ void clearInput()
   cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-void waitEnter()
-{
-  cout << "Please press Enter to continue...\n";
-  // cin.ignore() is already called by clearInput() if there's leftover input.
-  // Using cin.get() is sufficient here.
-  cin.get();
+void waitEnter() {
+    std::cout << "\nPlease press Enter to continue...";
+    std::cin.clear();
+    // If something is already buffered (like the leftover '\n' from >>),
+    // flush up to the next newline without blocking.
+    if (std::cin.rdbuf()->in_avail() > 0) {
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    std::cin.get();
 }
 
 void addStudent(vector<Student> &students)
@@ -281,7 +284,7 @@ void loadAllProfessorsFromFile(vector<Professor> &professors)
         getline(ss, lname, ',') &&
         getline(ss, spec, ',') &&
         getline(ss, sal, ',')&&
-        getline(ss, email, ','))
+        getline(ss, email))
     {
     try
     {
@@ -378,7 +381,7 @@ void loadAllSuperiorsFromFile(vector<Superior> &sup)
   ifstream PoutFile("superior.txt");
   if (!PoutFile.is_open())
   {
-    cerr << "File is not found or couldn't be opened! Starting with no professors\n";
+    cerr << "File is not found or couldn't be opened!\n";
     waitEnter();
     return;
   }
@@ -653,63 +656,71 @@ void ProfessorMenu(int ProfID, const vector<Professor> &professors, vector<Stude
   } while (choice != 5);
 }
 
-void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students) { 
-    clearScreen();
-    setColor(10); // green
-    typeWriter("===== SuperiorMenu =====\n", 15);
-    resetColor();
-
-    typeWriter("1. View child's grades\n2. Contact professors\n", 15);
-
+void SuperiorMenu(const vector<Professor> &professors, vector<Student> &students) {
     int choice;
-    if (!(cin >> choice)) { // prevent crash on invalid input
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Please enter a number.\n";
-        waitEnter();
-        return;
-    }
+    do {
+        clearScreen();
+        setColor(10); // green
+        typeWriter("===== Superior Menu =====\n", 15);
+        resetColor();
+         
+        typeWriter("1. View child's grades\n2. Contact professors\n3. Exit\n", 15);
 
-    switch (choice) {
-        case 1: {
-            int childID;
-            cout << "Enter child's ID: ";
-            if (!(cin >> childID)) {
-                cin.clear();
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                cout << "Invalid ID!\n";
+        setColor(14); // Yellow prompt
+        cout << "Enter your choice: ";
+        resetColor();
+
+        if (!(cin >> choice)) { // only read once
+            clearInput();
+            cout << "Invalid input. Please enter a number.\n";
+            waitEnter();
+            continue;
+        }
+        clearInput();
+
+        switch (choice) {
+            case 1: {
+                int childID;
+                cout << "Enter child's ID: ";
+                if (!(cin >> childID)) {
+                    clearInput();
+                    cout << "Invalid ID!\n";
+                    waitEnter();
+                    break;
+                }
+
+                bool found = false;
+                for (auto &st : students) {
+                    if (st.getID() == childID) {
+                        st.displayGrade();
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    cout << "Student not found!\n";
+                }
                 waitEnter();
                 break;
             }
-
-            bool found = false;
-            for (auto &st : students) {
-                if (st.getID() == childID) {
-                    st.displayGrade();
-                    found = true;
-                    break;
+            case 2:
+                cout << "Contacting professors...\n";
+                for (const auto &prof : professors) {
+                    cout << "- " << prof.getFullName() << " (" << prof.getEmail() << ")\n";
                 }
-            }
-            if (!found) {
-                cout << "Student not found!\n";
-            }
-            waitEnter();
-            break;
+                waitEnter();
+                break;
+            case 3:
+                cout << "Exiting Superior Menu...\n";
+                waitEnter();
+                break;
+            default:
+                cout << "Invalid choice.\n";
+                waitEnter();
+                break;
         }
-        case 2:
-            cout << "Contacting professors...\n";
-            for (const auto &prof : professors) {
-                cout << "- " << prof.getFullName() << " (" << prof.getEmail() << ")\n";
-            }
-            waitEnter();
-            break;
-        default:
-            cout << "Invalid choice.\n";
-            waitEnter();
-            break;
-    }
+    } while (choice != 3); // keep looping until Exit
 }
-
 
 int main()
 {

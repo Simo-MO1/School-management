@@ -68,7 +68,7 @@ void User:: registerUser(){
       cin.ignore();
       getline(cin,Subject);
 
-      ofstream pFile("professor.txt, ios::app");
+      ofstream pFile("professor.txt", ios::app);
       if(pFile.is_open()){
         pFile<<ID<<","<<Password<<","<<Subject<<endl;
         pFile.close();
